@@ -1,0 +1,47 @@
+body {
+    background-color: #1F2124;
+    color: #F2F3F4;
+    text-align: center;
+}
+
+#header {
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #000000;
+}
+
+#header_image_and_bio {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+#headshot_image {
+    width: 25%;
+    margin: 8px;
+    border: 2px solid #000000;
+    border-radius: 8px;
+}
+
+#hello_paragraph {
+    font-size: 14px;
+}
+
+#more_info {
+    font-size: 12px;
+}
+
+#socials_paragraph {
+    font-size: 14px;
+}
+
+#click_below {
+    font-size: 12px;
+}
+
+#socials_icons_and_links {
+    display: flex;
+    justify-content: space-around;
+}
