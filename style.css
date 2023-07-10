@@ -5,17 +5,40 @@ body {
 }
 
 #header {
-    height: 50px;
-    font-size: 20px;
-    text-align: center;
-    line-height: 50px;
     background-color: #000000;
+    height: 50px;
+    margin: 0px;
+}
+
+nav a {
+    color: #F2F3F4;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #888888;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li:first-child a {
+    font-weight: bold;
+}
+
+nav li {
+    display: inline-block;
+    padding-top: 15px;
+    margin: 0 10px;
 }
 
 #header_image_and_bio {
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 #headshot_image {
