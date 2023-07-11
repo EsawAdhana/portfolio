@@ -1,0 +1,32 @@
+#headshot_image {
+    width: 25%;
+    margin: 8px;
+    border: 2px solid #000000;
+    border-radius: 8px;
+}
+
+#hello_paragraph {
+    font-size: 14px;
+}
+
+li:first-child a {
+    font-weight: bold;
+    color: #767f8d;
+}
+
+#more_info {
+    font-size: 12px;
+}
+
+#socials_paragraph {
+    font-size: 14px;
+}
+
+#click_below {
+    font-size: 12px;
+}
+
+#socials_icons_and_links {
+    display: flex;
+    justify-content: space-around;
+}
