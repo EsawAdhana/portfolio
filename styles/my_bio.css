@@ -20,6 +20,7 @@ li:nth-child(2) a {
 }
 
 #description {
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

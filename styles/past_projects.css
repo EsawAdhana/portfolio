@@ -1,4 +1,21 @@
-li:nth-child(3) a {
+#header li:nth-child(3) a {
     font-weight: bold;
     color: #767f8d;
+}
+
+#projects ul {
+    margin-top: 50px;
+}
+
+#projects li {
+    font-weight: bold;
+    list-style-type: none;
+    margin: 20px;
+    font-size: 24px;
+}
+
+#projects li a {
+    text-decoration: none;
+    color: #F2F3F4;
+    text-shadow: 4px 3px black;
 }
