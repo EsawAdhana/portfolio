@@ -1,5 +1,7 @@
 #text {
     display: flex;
+    justify-content: center;
+    height: 100vh;
 }
 
 #top_pic_and_desc {
@@ -8,8 +10,8 @@
 }
 
 #top_pic_and_desc img {
-    height: 200px;
-    margin: 15px;
+    height: 300px;
+    margin: 30px;
     border: 2px solid #000000;
     border-radius: 8px;
 }
@@ -27,15 +29,14 @@ li:nth-child(2) a {
 }
 
 #description p {
-    font-size: 18px;
+    font-size: 30px;
     margin-top: 15px;
 }
-
 
 #description ul {
     text-align: left;
     list-style-type: square;
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 24px;
+    line-height: 35px;
     margin-top: 0;
 }
