@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -5,19 +7,21 @@ export default function Home() {
         <div className="flex flex-col md:flex-row gap-8 items-center">
           {/* Profile Picture */}
           <div className="w-48 h-48 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center">
-            {/* Replace '/your-image.jpg' with your actual image path */}
-            <img 
+            <Image 
               src="/profile-picture.png" 
               alt="Profile picture"
-              className="w-full h-full object-cover"
+              width={192}
+              height={192}
+              className="object-cover"
+              priority
             />
           </div>
 
           {/* Text Content */}
           <div>
-            <h1 className="text-4xl font-bold mb-4">Hi, I'm Esaw Adhana</h1>
+            <h1 className="text-4xl font-bold mb-4">Hi, I&apos;m Esaw Adhana</h1>
             <p className="text-lg text-gray-300 mb-4">
-              Welcome to my portfolio! I'm a sophomore at Stanford University studying Computer Science.
+              Welcome to my portfolio! I&apos;m a sophomore at Stanford University studying Computer Science.
             </p>
             <p className="text-gray-400 mb-6">
               In my free time, I like weight lifting, rock climbing, and playing poker.
