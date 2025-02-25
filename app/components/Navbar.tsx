@@ -1,23 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { useTheme } from '@/app/context/ThemeContext';
 
 const Navbar = () => {
-  const [theme, setTheme] = useState('dark');
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <nav className="fixed top-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
@@ -39,8 +27,15 @@ const Navbar = () => {
             <Link href="/about" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
               About
             </Link>
-            <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-              {theme === 'dark' ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
+            <button 
+              onClick={toggleTheme} 
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? 
+                <Sun className="w-5 h-5 text-gray-300" /> : 
+                <Moon className="w-5 h-5 text-gray-600" />
+              }
             </button>
           </div>
         </div>

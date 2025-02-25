@@ -5,5 +5,5 @@ export type ProjectType = {
     technologies: string[];
     timeline: string;
     points: string[];
-    link: string;
+    link?: string;
   };
