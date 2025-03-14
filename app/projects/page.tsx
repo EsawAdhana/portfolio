@@ -47,7 +47,7 @@ const projects: ProjectType[] = [
 ];
 
 export default function Projects() {
-useTheme();
+  useTheme();
 
   return (
     <main className="min-h-screen pt-24 px-4 theme-bg pb-16 font-geist">
@@ -62,7 +62,7 @@ useTheme();
         </motion.div>
 
         {/* Project Categories */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -75,15 +75,15 @@ useTheme();
             <h3 className="text-lg font-semibold theme-text mb-2">Full-Stack Applications</h3>
             <p className="theme-text-secondary">Web applications with frontend and backend components</p>
           </div>
-          
+
           <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
             <div className="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4">
               <Code className="text-green-600 dark:text-green-400" size={24} />
             </div>
-            <h3 className="text-lg font-semibold theme-text mb-2">Systems Programming</h3>
-            <p className="theme-text-secondary">Low-level programming and embedded systems</p>
+            <h3 className="text-lg font-semibold theme-text mb-2">Version Control & Collaboration</h3>
+            <p className="theme-text-secondary">Git workflow, pull requests, and team-based development</p>
           </div>
-          
+
           <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
             <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mb-4">
               <Zap className="text-purple-600 dark:text-purple-400" size={24} />
@@ -108,12 +108,12 @@ useTheme();
                 <h2 className="text-2xl font-bold theme-text">{projects[0].title}</h2>
                 <span className="text-sm theme-text-secondary">{projects[0].timeline}</span>
               </div>
-              
+
               <p className="theme-text-secondary mt-3 mb-5 text-lg">{projects[0].description}</p>
-              
+
               <div className="flex flex-wrap gap-2 mb-6">
                 {projects[0].technologies.map((tech, techIndex) => (
-                  <span 
+                  <span
                     key={techIndex}
                     className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
                   >
@@ -121,7 +121,7 @@ useTheme();
                   </span>
                 ))}
               </div>
-              
+
               <div className="space-y-3">
                 {projects[0].points.map((point, pointIndex) => (
                   <p key={pointIndex} className="theme-text-secondary flex items-start">
@@ -129,11 +129,11 @@ useTheme();
                     <span>{point}</span>
                   </p>
                 ))}
-                
+
                 {projects[0].link && (
-                  <a 
-                    href={projects[0].link} 
-                    target="_blank" 
+                  <a
+                    href={projects[0].link}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md transition-colors font-medium"
                   >
