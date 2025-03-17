@@ -80,8 +80,8 @@ useTheme();
             <div className="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4">
               <Code className="text-green-600 dark:text-green-400" size={24} />
             </div>
-            <h3 className="text-lg font-semibold theme-text mb-2">Systems Programming</h3>
-            <p className="theme-text-secondary">Low-level programming and embedded systems</p>
+            <h3 className="text-lg font-semibold theme-text mb-2">Collaborative Development</h3>
+            <p className="theme-text-secondary">Team-based projects using Git/GitHub and other version control systems</p>
           </div>
           
           <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
