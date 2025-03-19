@@ -8,9 +8,21 @@ import { FolderKanban, Code, Zap, ExternalLink } from 'lucide-react';
 
 const projects: ProjectType[] = [
   {
+    title: "ScentSync",
+    description: "Personalized fragrance website that suggests compatible personal care products",
+    technologies: ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "OpenAI API"],
+    timeline: "Jan. 2025 – Mar. 2025",
+    points: [
+      "Engineered web scraping module to collect and store data of 1,000+ products from EWG database",
+      "Implemented user authentication via Next-Auth and designed data persistence by storing in MongoDB",
+      "Created intuitive user flows for product recommendations and personalized routines"
+    ],
+    link: "https://stanfordscentsync.vercel.app/"
+  },
+  {
     title: "PropaGONE",
     description: "Extension to identify and highlight propaganda and misinformation in news articles",
-    technologies: ["Python", "React", "JavaScript", "Claude-3 Opus API"],
+    technologies: ["Python", "React", "JavaScript", "Claude API"],
     timeline: "Apr. 2024 – June 2024",
     points: [
       "Deployed extension to identify and highlight propaganda and misinformation in news articles",
@@ -37,7 +49,7 @@ const projects: ProjectType[] = [
     title: "Poker Simulator",
     description: "Program capable of running simulated games of No-Limits Texas Hold'Em",
     technologies: ["Java"],
-    timeline: "June. 2023 – Aug. 2023",
+    timeline: "June 2023 – Aug. 2023",
     points: [
       "Developed program capable of running simulated games of No-Limits Texas Hold'Em",
       "Calculates hand equity through Monte Carlo simulations, iterating through possible hands",
