@@ -45,7 +45,11 @@ useTheme();
   };
 
   return (
-    <main className="min-h-screen pt-24 theme-bg pb-16 font-geist">
+    <main className="min-h-screen pt-24 theme-bg pb-16 font-geist relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-40 right-0 w-64 h-64 bg-gradient-radial from-[color:var(--accent-light)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-40 left-0 w-64 h-64 bg-gradient-radial from-[color:var(--accent)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
+      
       <div className="max-w-6xl mx-auto p-8">
         {/* Header */}
         <motion.div
@@ -54,7 +58,7 @@ useTheme();
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">Get In Touch</h1>
+          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-light)]">Get In Touch</h1>
           <p className="theme-text-secondary text-lg">
             Feel free to reach out for collaborations, questions, or just to say hello!
           </p>
@@ -69,14 +73,17 @@ useTheme();
             transition={{ duration: 0.6, delay: 0.2 }}
             className="md:w-1/2"
           >
-            <h2 className="text-2xl font-bold mb-6 theme-text">Connect With Me</h2>
-            <div className="theme-card p-6 space-y-6 h-full border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+            <h2 className="text-2xl font-bold mb-6 theme-text flex items-center">
+              <span className="inline-block w-6 h-6 rounded-full bg-[color:var(--accent)]/20 mr-2 flex-shrink-0"></span>
+              Connect With Me
+            </h2>
+            <div className="theme-card p-6 space-y-6 h-full">
               <a 
                 href="mailto:adhanaesaw@gmail.com"
-                className="flex items-center gap-4 theme-text hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="flex items-center gap-4 theme-text hover:text-[color:var(--accent)] transition-colors p-3 rounded-lg hover:bg-[color:var(--card-accent)]"
               >
-                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-12 h-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-[color:var(--accent)]" />
                 </div>
                 <span className="font-medium text-lg">adhanaesaw@gmail.com</span>
               </a>
@@ -85,10 +92,10 @@ useTheme();
                 href="https://github.com/EsawAdhana"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 theme-text hover:text-gray-900 dark:hover:text-white transition-colors p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="flex items-center gap-4 theme-text hover:text-[color:var(--accent)] transition-colors p-3 rounded-lg hover:bg-[color:var(--card-accent)]"
               >
-                <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
-                  <Github className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                <div className="w-12 h-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center">
+                  <Github className="w-6 h-6 text-[color:var(--accent)]" />
                 </div>
                 <span className="font-medium text-lg">GitHub</span>
               </a>
@@ -97,10 +104,10 @@ useTheme();
                 href="https://linkedin.com/in/EsawAdhana"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 theme-text hover:text-blue-700 dark:hover:text-blue-400 transition-colors p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="flex items-center gap-4 theme-text hover:text-[color:var(--accent)] transition-colors p-3 rounded-lg hover:bg-[color:var(--card-accent)]"
               >
-                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                  <Linkedin className="w-6 h-6 text-blue-700 dark:text-blue-400" />
+                <div className="w-12 h-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center">
+                  <Linkedin className="w-6 h-6 text-[color:var(--accent)]" />
                 </div>
                 <span className="font-medium text-lg">LinkedIn</span>
               </a>
@@ -109,10 +116,10 @@ useTheme();
                 href="https://instagram.com/esaw.adhana"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 theme-text hover:text-pink-600 dark:hover:text-pink-400 transition-colors p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="flex items-center gap-4 theme-text hover:text-[color:var(--accent)] transition-colors p-3 rounded-lg hover:bg-[color:var(--card-accent)]"
               >
-                <div className="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center">
-                  <Instagram className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-12 h-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center">
+                  <Instagram className="w-6 h-6 text-[color:var(--accent)]" />
                 </div>
                 <span className="font-medium text-lg">Instagram</span>
               </a>
@@ -126,8 +133,11 @@ useTheme();
             transition={{ duration: 0.6, delay: 0.3 }}
             className="md:w-1/2"
           >
-            <h2 className="text-2xl font-bold mb-6 theme-text">Send Me a Message</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="theme-card p-8 space-y-5 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+            <h2 className="text-2xl font-bold mb-6 theme-text flex items-center">
+              <span className="inline-block w-6 h-6 rounded-full bg-[color:var(--accent)]/20 mr-2 flex-shrink-0"></span>
+              Send Me a Message
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="theme-card p-8 space-y-5">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium theme-text mb-2">
                   Name
@@ -135,7 +145,7 @@ useTheme();
                 <input
                   {...register("name", { required: true })}
                   type="text"
-                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg theme-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  className="form-input"
                   placeholder="Your name"
                 />
                 {errors.name && <span className="text-red-500 text-sm mt-1 block">Name is required</span>}
@@ -148,7 +158,7 @@ useTheme();
                 <input
                   {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                   type="email"
-                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg theme-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  className="form-input"
                   placeholder="your.email@example.com"
                 />
                 {errors.email && <span className="text-red-500 text-sm mt-1 block">Valid email is required</span>}
@@ -161,7 +171,7 @@ useTheme();
                 <textarea
                   {...register("message", { required: true })}
                   rows={4}
-                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg theme-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-colors"
+                  className="form-input resize-none"
                   placeholder="Your message..."
                 />
                 {errors.message && <span className="text-red-500 text-sm mt-1 block">Message is required</span>}
@@ -170,7 +180,7 @@ useTheme();
               <button 
                 type="submit" 
                 disabled={isLoading} 
-                className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition-all font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+                className="btn-primary w-full"
               >
                 {isLoading ? 'Sending...' : 'Send Message'}
               </button>

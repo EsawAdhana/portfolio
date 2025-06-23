@@ -62,7 +62,11 @@ export default function Projects() {
   useTheme();
 
   return (
-    <main className="min-h-screen pt-24 px-4 theme-bg pb-16 font-geist">
+    <main className="min-h-screen pt-24 px-4 theme-bg pb-16 font-geist relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-40 right-0 w-64 h-64 bg-gradient-radial from-[color:var(--accent-light)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-40 left-0 w-64 h-64 bg-gradient-radial from-[color:var(--accent)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
+      
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -70,7 +74,7 @@ export default function Projects() {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">Projects</h1>
+          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-light)]">Projects</h1>
         </motion.div>
 
         {/* Project Categories */}
@@ -80,25 +84,25 @@ export default function Projects() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
         >
-          <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-            <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
-              <FolderKanban className="text-blue-600 dark:text-blue-400" size={24} />
+          <div className="theme-card p-6 flex flex-col items-center text-center">
+            <div className="h-12 w-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center mb-4">
+              <FolderKanban className="text-[color:var(--accent)]" size={24} />
             </div>
             <h3 className="text-lg font-semibold theme-text mb-2">Full-Stack Applications</h3>
             <p className="theme-text-secondary">Web applications with frontend and backend components</p>
           </div>
 
-          <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-            <div className="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4">
-              <Code className="text-green-600 dark:text-green-400" size={24} />
+          <div className="theme-card p-6 flex flex-col items-center text-center">
+            <div className="h-12 w-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center mb-4">
+              <Code className="text-[color:var(--accent)]" size={24} />
             </div>
             <h3 className="text-lg font-semibold theme-text mb-2">Collaborative Development</h3>
             <p className="theme-text-secondary">Team-based projects using Git/GitHub and other version control systems</p>
           </div>
 
-          <div className="theme-card p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-            <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mb-4">
-              <Zap className="text-purple-600 dark:text-purple-400" size={24} />
+          <div className="theme-card p-6 flex flex-col items-center text-center">
+            <div className="h-12 w-12 rounded-full bg-[color:var(--accent)]/20 flex items-center justify-center mb-4">
+              <Zap className="text-[color:var(--accent)]" size={24} />
             </div>
             <h3 className="text-lg font-semibold theme-text mb-2">Algorithms & Simulations</h3>
             <p className="theme-text-secondary">Complex algorithms and computational simulations</p>
@@ -113,8 +117,8 @@ export default function Projects() {
           className="mb-12"
         >
           <h2 className="text-2xl font-bold mb-6 theme-text text-center">Featured Project</h2>
-          <div className="theme-card overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-2"></div>
+          <div className="theme-card overflow-hidden">
+            <div className="bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-light)] h-2"></div>
             <div className="p-8">
               <div className="flex justify-between items-start">
                 <h2 className="text-2xl font-bold theme-text">{projects[0].title}</h2>
@@ -127,7 +131,7 @@ export default function Projects() {
                 {projects[0].technologies.map((tech, techIndex) => (
                   <span
                     key={techIndex}
-                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
+                    className="skill-tag"
                   >
                     {tech}
                   </span>
@@ -137,7 +141,7 @@ export default function Projects() {
               <div className="space-y-3">
                 {projects[0].points.map((point, pointIndex) => (
                   <p key={pointIndex} className="theme-text-secondary flex items-start">
-                    <span className="text-blue-500 dark:text-blue-400 mr-2 font-bold">•</span>
+                    <span className="text-[color:var(--accent)] mr-2 font-bold">•</span>
                     <span>{point}</span>
                   </p>
                 ))}
@@ -147,7 +151,7 @@ export default function Projects() {
                     href={projects[0].link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md transition-colors font-medium"
+                    className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-[image:var(--button-bg)] hover:bg-[image:var(--button-hover)] text-white rounded-md transition-colors font-medium"
                   >
                     View Project
                     <ExternalLink size={18} />

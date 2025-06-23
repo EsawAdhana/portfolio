@@ -26,7 +26,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         delay: index * 0.1,
         ease: [0.21, 0.45, 0.25, 0.95]
       }}
-      className="theme-card overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300"
+      className="theme-card overflow-hidden"
     >
       <div className="p-6">
         <div className="flex justify-between items-start">
@@ -40,7 +40,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           {project.technologies.map((tech, techIndex) => (
             <span 
               key={techIndex}
-              className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium"
+              className="skill-tag"
             >
               {tech}
             </span>
@@ -54,7 +54,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         >
           {project.points.map((point, pointIndex) => (
             <p key={pointIndex} className="theme-text-secondary flex items-start">
-              <span className="text-blue-500 dark:text-blue-400 mr-2 font-medium">•</span>
+              <span className="text-[color:var(--accent)] mr-2 font-medium">•</span>
               <span>{point}</span>
             </p>
           ))}
@@ -64,7 +64,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mt-4 font-medium"
+              className="flex items-center gap-2 text-[color:var(--accent)] hover:underline mt-4 font-medium"
             >
               <span>View Project</span>
               <ExternalLink size={16} />
@@ -75,7 +75,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       
       <button
         onClick={toggleExpanded}
-        className="w-full p-3 bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium"
+        className="w-full p-3 bg-[color:var(--card-accent)] flex items-center justify-center text-[color:var(--foreground)] hover:bg-[color:var(--accent-light)]/30 transition-colors font-medium"
       >
         {isExpanded ? (
           <>

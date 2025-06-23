@@ -3,30 +3,46 @@
 @tailwind utilities;
 
 :root {
-  --background: #f5f5f7;
-  --foreground: #333333;
+  --background: #f3f0ee;
+  --foreground: #2a2a2a;
   --card-bg: #ffffff;
+  --card-accent: #e6e1dd;
   --input-bg: #ffffff;
-  --input-border: #e2e8f0;
-  --button-bg: linear-gradient(to right, #3b82f6, #8b5cf6);
-  --button-hover: linear-gradient(to right, #2563eb, #7c3aed);
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --input-border: #dfd8d3;
+  --accent: #cb997e;
+  --accent-light: #ddbea9;
+  --button-bg: linear-gradient(135deg, #cb997e, #a5a58d);
+  --button-hover: linear-gradient(135deg, #b7876f, #90907c);
+  --card-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
 }
 
 .dark {
-  --background: #1e1e2e;
-  --foreground: #e0e0e0;
-  --card-bg: #27273c;
-  --input-bg: #1f2937;
-  --input-border: #374151;
-  --button-bg: linear-gradient(to right, #4f46e5, #7e22ce);
-  --button-hover: linear-gradient(to right, #4338ca, #6d28d9);
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --background: #1c1c22;
+  --foreground: #f0f0f0;
+  --card-bg: #27272f;
+  --card-accent: #32323e;
+  --input-bg: #2a2a32;
+  --input-border: #3a3a46;
+  --accent: #a06f51;
+  --accent-light: #bc8f76;
+  --button-bg: linear-gradient(135deg, #a06f51, #6b705c);
+  --button-hover: linear-gradient(135deg, #8c613e, #5d6250);
+  --card-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  background-image: 
+    radial-gradient(at 70% 20%, rgba(203, 153, 126, 0.07) 0px, transparent 50%),
+    radial-gradient(at 30% 80%, rgba(165, 165, 141, 0.07) 0px, transparent 50%);
+  overflow-x: hidden;
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(at 70% 20%, rgba(160, 111, 81, 0.1) 0px, transparent 50%),
+    radial-gradient(at 30% 80%, rgba(107, 112, 92, 0.1) 0px, transparent 50%);
 }
 
 /* Font variables for the Geist fonts */
@@ -41,28 +57,63 @@ body {
 /* Custom classes for theme consistency */
 @layer components {
   .theme-card {
-    @apply bg-white dark:bg-[#27273c] rounded-lg shadow-md;
+    @apply relative bg-[color:var(--card-bg)] dark:bg-[color:var(--card-bg)] rounded-xl shadow-md border border-[color:var(--card-accent)] dark:border-[color:var(--card-accent)] overflow-hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .theme-card:hover::before {
+    opacity: 1;
+  }
+  
+  .theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow);
   }
   
   .theme-bg {
-    @apply bg-gray-50 dark:bg-[#1e1e2e];
+    @apply bg-[color:var(--background)] dark:bg-[color:var(--background)];
   }
   
   .theme-text {
-    @apply text-gray-800 dark:text-gray-100;
+    @apply text-[color:var(--foreground)] dark:text-[color:var(--foreground)];
   }
   
   .theme-text-secondary {
-    @apply text-gray-600 dark:text-gray-300;
+    @apply text-[color:var(--foreground)] dark:text-[color:var(--foreground)] opacity-80;
+  }
+  
+  .theme-accent {
+    @apply text-[color:var(--accent)] dark:text-[color:var(--accent)];
   }
   
   /* Form element styling */
   .form-input {
-    @apply w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors;
+    @apply w-full px-4 py-3 bg-[color:var(--input-bg)] dark:bg-[color:var(--input-bg)] border border-[color:var(--input-border)] dark:border-[color:var(--input-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)] dark:focus:ring-[color:var(--accent)] focus:border-transparent transition-colors;
   }
   
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all;
+    @apply px-6 py-3 bg-[image:var(--button-bg)] hover:bg-[image:var(--button-hover)] text-white rounded-lg font-medium transition-all;
+  }
+  
+  /* Skill tag styling */
+  .skill-tag {
+    @apply px-3 py-1 bg-[color:var(--card-accent)] dark:bg-[color:var(--card-accent)] text-[color:var(--foreground)] dark:text-[color:var(--foreground)] text-opacity-90 dark:text-opacity-90 rounded-full text-sm border border-transparent transition-all;
+  }
+  
+  .skill-tag:hover {
+    @apply border-[color:var(--accent)] dark:border-[color:var(--accent)];
   }
   
   /* Animation classes */
@@ -81,27 +132,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--card-accent);
   border-radius: 10px;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #2d2d3a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  background: var(--accent-light);
   border-radius: 10px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #4e4e5c;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #5e5e6e;
+  background: var(--accent);
 }
