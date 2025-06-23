@@ -81,7 +81,7 @@ export default function Home() {
                 Current Focus
               </h2>
               <p className="theme-text-secondary">
-                Preparing for my upcoming internship at Google on their Core User Protection team.
+                Working for Google on their Core User Protection team.
               </p>
             </div>
           </AnimatedElement>
