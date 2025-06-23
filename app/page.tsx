@@ -47,7 +47,7 @@ export default function Home() {
             <AnimatedElement delay={0.4}>
               <div className="flex items-center gap-3 mt-4 max-w-xs mx-auto md:mx-0">
                 <div className="h-px flex-grow bg-[color:var(--card-accent)]"></div>
-                <span className="text-sm text-[color:var(--foreground)] opacity-60">Stanford '27</span>
+                <span className="text-sm text-[color:var(--foreground)] opacity-60">Stanford &apos;27</span>
                 <div className="h-px flex-grow bg-[color:var(--card-accent)]"></div>
               </div>
             </AnimatedElement>
