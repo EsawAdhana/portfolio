@@ -289,7 +289,7 @@ export default function Home() {
               <div className="flex-grow flex items-center justify-center">
                 <div className="text-center">
                   <div className="grid grid-cols-1 gap-2 max-w-xs">
-                    {["Weightlifting", "Bouldering", "Surfing", "Poker", "Stocks/Trading"].map((interest, index) => (
+                    {["Weightlifting", "Bouldering", "Surfing", "Poker", "Stocks/Trading"].map((interest) => (
                       <div key={interest} className="flex items-center justify-center gap-2 text-sm theme-text-secondary">
                         <span className="w-2 h-2 rounded-full bg-[color:var(--accent)]"></span>
                         <span>{interest}</span>
