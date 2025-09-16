@@ -109,11 +109,16 @@ body {
   
   /* Skill tag styling */
   .skill-tag {
-    @apply px-3 py-1 bg-[color:var(--card-accent)] dark:bg-[color:var(--card-accent)] text-[color:var(--foreground)] dark:text-[color:var(--foreground)] text-opacity-90 dark:text-opacity-90 rounded-full text-sm border border-transparent transition-all;
+    @apply px-3 py-2 bg-[color:var(--card-accent)] dark:bg-[color:var(--card-accent)] text-[color:var(--foreground)] dark:text-[color:var(--foreground)] text-opacity-90 dark:text-opacity-90 rounded-lg text-sm border border-transparent transition-all font-medium;
   }
   
   .skill-tag:hover {
     @apply border-[color:var(--accent)] dark:border-[color:var(--accent)];
+    background-color: rgba(203, 153, 126, 0.1);
+  }
+  
+  .dark .skill-tag:hover {
+    background-color: rgba(160, 111, 81, 0.1);
   }
   
   /* Animation classes */
