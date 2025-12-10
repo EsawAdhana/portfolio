@@ -34,8 +34,13 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
   overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
 }
 
 body {

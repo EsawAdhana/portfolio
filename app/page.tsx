@@ -166,14 +166,14 @@ export default function Home() {
       
       {/* Fixed header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-[color:var(--border-subtle)] bg-[color:var(--background)]/90 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center relative">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
           <button 
             onClick={() => scrollToSection('hero')}
-            className="absolute left-6 font-mono text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
+            className="font-mono text-xs md:text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
           >
             esaw adhana
           </button>
-          <nav className="flex items-center justify-center gap-8 md:gap-12">
+          <nav className="flex items-center gap-4 md:gap-8">
             <button 
               onClick={() => scrollToSection('about')}
               className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
@@ -192,24 +192,24 @@ export default function Home() {
             >
               contact
             </button>
+            <button 
+              onClick={toggleTheme} 
+              className="w-8 h-8 border border-[color:var(--border-subtle)] flex items-center justify-center hover:border-[color:var(--border)] transition-colors"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
           </nav>
-          <button 
-            onClick={toggleTheme} 
-            className="absolute right-6 w-8 h-8 border border-[color:var(--border-subtle)] flex items-center justify-center hover:border-[color:var(--border)] transition-colors"
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
-          </button>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 pt-16 pb-8">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 pt-16 pb-8">
         {/* Hero Section */}
-        <section id="hero" ref={heroRef} className="mb-48 min-h-[85vh] flex items-center scroll-mt-14 snap-start py-8">
+        <section id="hero" ref={heroRef} className="mb-24 md:mb-48 min-h-[auto] md:min-h-[85vh] flex items-center scroll-mt-14 md:snap-start py-8">
           <motion.div 
             style={{ opacity: heroOpacity, y: heroY }}
             className="w-full"
@@ -295,7 +295,7 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="mb-48 py-16 scroll-mt-14 snap-start">
+        <section id="about" className="mb-24 md:mb-48 py-8 md:py-16 scroll-mt-14 md:snap-start">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -416,7 +416,7 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="mb-48 py-16 scroll-mt-14 snap-start">
+        <section id="projects" className="mb-24 md:mb-48 py-8 md:py-16 scroll-mt-14 md:snap-start">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -553,7 +553,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="mb-40 py-16 scroll-mt-14 snap-start">
+        <section id="contact" className="mb-16 md:mb-40 py-8 md:py-16 scroll-mt-14 md:snap-start">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
