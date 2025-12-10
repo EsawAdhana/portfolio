@@ -553,7 +553,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="mb-48 py-16 scroll-mt-14 snap-start">
+        <section id="contact" className="mb-40 py-16 scroll-mt-14 snap-start">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -627,7 +627,7 @@ export default function Home() {
         </section>
         
         {/* Footer */}
-        <footer className="pt-12 pb-8 border-t border-[color:var(--border-subtle)]">
+        <footer className="pt-8 pb-8 border-t border-[color:var(--border-subtle)]">
           <p className="font-mono text-xs text-[color:var(--muted)] text-center">
             © 2025 Esaw Adhana
           </p>
