@@ -1,13 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import Image from 'next/image';
-import AnimatedElement from './components/AnimatedElement';
 import { useTheme } from './context/ThemeContext';
-import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Instagram, Sun, Moon, ExternalLink, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { ArrowUpRight, ArrowRight, X, Github, Linkedin, Instagram, Mail, Sun, Moon, Sparkles } from 'lucide-react';
 import type { ProjectType } from './lib/types';
 
 type FormData = {
@@ -18,69 +17,116 @@ type FormData = {
 
 const projects: ProjectType[] = [
   {
+    title: "Let 'Em Cook!",
+    description: "Social cooking app that turns meal prep into a friendly competition",
+    technologies: ["React Native", "TypeScript", "Supabase"],
+    timeline: "Sept. 2025 – Dec. 2025",
+    points: [
+      "Developed social cooking app allowing users to create and submit to cooking challenges and vote on favorite community submissions",
+      "Applied iterative design process from Stanford's CS 147 to conduct needfinding interviews, build experience prototypes, and create early Figma mockups",
+      "Built React Native mobile app integrated with Supabase to manage user data in real time",
+      "Earned 'Best Demo Award' at Stanford's CS 147 2025 Expo for excellence in design"
+    ],
+    link: "https://hci.stanford.edu/courses/cs147/2025/au/projects/AdultingMadeEasier/LetEmCook/"
+  },
+  {
     title: "ScentSync",
-    description: "Personalized fragrance website that suggests compatible personal care products",
+    description: "Recommendation engine to match EWG health and beauty products for personalized, eco-friendly routines",
     technologies: ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "OpenAI API"],
     timeline: "Jan. 2025 – Mar. 2025",
     points: [
-      "Engineered web scraping module to collect and store data of 1,000+ products from EWG database",
-      "Implemented user authentication via Next-Auth and designed data persistence by storing in MongoDB",
-      "Created intuitive user flows for product recommendations and personalized routines"
+      "Developed recommendation engine to match EWG health and beauty products to suggest personalized, eco-friendly routines in line with user preferences",
+      "Engineered web scraping module to collect and store data of 1,000+ products from EWG database"
     ],
     link: "https://stanfordscentsync.vercel.app/"
   },
   {
     title: "PropaGONE",
-    description: "Extension to identify and highlight propaganda and misinformation in news articles",
+    description: "Chrome extension integrating Claude to detect and explain propaganda and manipulative language",
     technologies: ["Python", "React", "JavaScript", "Claude API"],
     timeline: "Apr. 2024 – June 2024",
     points: [
-      "Deployed extension to identify and highlight propaganda and misinformation in news articles",
-      "Administered speedy feedback and analysis to users through highlighting and text tooltips in seconds",
-      "Co-authored research paper and delivered presentation for Stanford's CS 197 class"
+      "Developed Chrome extension integrating Claude to detect and explain propaganda and manipulative language across online news articles in under 3 seconds",
+      "Implemented user feedback integration via thumbs up/down signaling to fine-tune model responses and improve detection accuracy over time"
     ],
     link: "https://drive.google.com/file/d/1dMb5b81XKFC9oI6_AM7halHBLDNUwOXV/view?usp=sharing"
-  },
-  {
-    title: "Bare-metal Console",
-    description: "Command-executing console written entirely from scratch",
-    technologies: ["C", "Assembly"],
-    timeline: "Jan. 2024 – Mar. 2024",
-    points: [
-      "Programmed command-executing console written entirely from scratch",
-      "Designed custom I/O handling, capable of displaying results to screen",
-      "Launched on Mango Pi platform with 14 self-written modules"
-    ],
-  },
-  {
-    title: "Poker Simulator",
-    description: "Program capable of running simulated games of No-Limits Texas Hold'Em",
-    technologies: ["Java"],
-    timeline: "June 2023 – Aug. 2023",
-    points: [
-      "Developed program capable of running simulated games of No-Limits Texas Hold'Em",
-      "Calculates hand equity through Monte Carlo simulations, iterating through possible hands"
-    ],
   }
+];
+
+const socialLinks = [
+  { name: 'GitHub', url: 'https://github.com/EsawAdhana', icon: Github },
+  { name: 'LinkedIn', url: 'https://linkedin.com/in/EsawAdhana', icon: Linkedin },
+  { name: 'Instagram', url: 'https://instagram.com/esaw.adhana', icon: Instagram },
+  { name: 'Email', url: 'mailto:adhanaesaw@gmail.com', icon: Mail },
+];
+
+const languages = ["Java", "Python", "Go", "C", "C++", "HTML", "CSS", "JavaScript", "TypeScript"];
+const software = ["GitHub", "Git", "Next.js", "MongoDB", "Firebase", "Supabase", "React Native", "Excel"];
+const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Improv"];
+
+const typingTexts = [
+  "drinking an iced mocha",
+  "projecting a V5 boulder",
+  "playing a home game of poker",
+  "working on a side project"
 ];
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [activeProject, setActiveProject] = useState<number | null>(null);
+  const [typingText, setTypingText] = useState('');
+  const [typingIndex, setTypingIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+  const heroRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
 
-  const nextProject = () => {
-    setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
+  // Typing animation effect
+  useEffect(() => {
+    const currentText = typingTexts[typingIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (!isDeleting && typingText.length < currentText.length) {
+      timeout = setTimeout(() => {
+        setTypingText(currentText.slice(0, typingText.length + 1));
+      }, 100);
+    } else if (!isDeleting && typingText.length === currentText.length) {
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 2000);
+    } else if (isDeleting && typingText.length > 0) {
+      timeout = setTimeout(() => {
+        setTypingText(currentText.slice(0, typingText.length - 1));
+      }, 50);
+    } else if (isDeleting && typingText.length === 0) {
+      setIsDeleting(false);
+      setTypingIndex((prev) => (prev + 1) % typingTexts.length);
+    }
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typingText, typingIndex, isDeleting]);
+
+  // Smooth scroll function
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const headerHeight = 56; // h-14 = 56px
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
-
-  const prevProject = () => {
-    setCurrentProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  };
-
-  const currentProject = projects[currentProjectIndex];
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -100,7 +146,7 @@ export default function Home() {
       reset();
       setTimeout(() => {
         setIsSubmitted(false);
-        setIsContactModalOpen(false);
+        setIsContactOpen(false);
       }, 2000);
     } catch (error) {
       console.error('Failed to send email:', error);
@@ -111,342 +157,522 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen theme-bg font-geist relative overflow-hidden">
-      {/* Fixed Position Controls */}
-      <div className="fixed top-6 right-6 z-50 flex gap-3">
-        <button 
-          onClick={() => setIsContactModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-3 rounded-full bg-[color:var(--accent)] hover:bg-[color:var(--accent-light)] transition-all shadow-lg text-white font-medium"
-          aria-label="Contact me"
-        >
-          <Mail className="w-5 h-5" />
-          <span className="text-sm">Message Me</span>
-        </button>
-        
-        <button 
-          onClick={toggleTheme} 
-          className="p-3 rounded-full bg-[color:var(--card-accent)] hover:bg-[color:var(--accent-light)]/30 transition-colors shadow-lg"
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {theme === 'dark' ? 
-            <Sun className="w-5 h-5 text-[color:var(--accent)]" /> : 
-            <Moon className="w-5 h-5 text-[color:var(--accent)]" />
-          }
-        </button>
-      </div>
-
-      {/* Decorative Background Elements */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-radial from-[color:var(--accent-light)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
-      <div className="absolute top-1/2 -left-20 w-64 h-64 bg-gradient-radial from-[color:var(--accent)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
-      <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-radial from-[color:var(--accent-light)]/10 to-transparent opacity-70 blur-2xl rounded-full pointer-events-none"></div>
+    <main className="bg-[color:var(--background)]">
+      {/* Scroll progress indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-0.5 bg-[color:var(--accent)] origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
       
-      <div className="max-w-5xl mx-auto p-8 space-y-16">
+      {/* Fixed header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-[color:var(--border-subtle)] bg-[color:var(--background)]/90 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center relative">
+          <button 
+            onClick={() => scrollToSection('hero')}
+            className="absolute left-6 font-mono text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
+          >
+            esaw adhana
+          </button>
+          <nav className="flex items-center justify-center gap-8 md:gap-12">
+            <button 
+              onClick={() => scrollToSection('about')}
+              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+            >
+              about
+            </button>
+            <button 
+              onClick={() => scrollToSection('projects')}
+              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+            >
+              projects
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+            >
+              contact
+            </button>
+          </nav>
+          <button 
+            onClick={toggleTheme} 
+            className="absolute right-6 w-8 h-8 border border-[color:var(--border-subtle)] flex items-center justify-center hover:border-[color:var(--border)] transition-colors"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4" />
+            ) : (
+              <Moon className="w-4 h-4" />
+            )}
+          </button>
+        </div>
+      </header>
+
+      <div className="max-w-6xl mx-auto px-6 pt-16 pb-8">
         {/* Hero Section */}
-        <section className="flex flex-col md:flex-row items-center md:items-start gap-8 pt-8">
-          <AnimatedElement>
-            <div className="relative w-48 h-48 rounded-full overflow-hidden flex-shrink-0 border-2 border-[color:var(--card-accent)] shadow-soft">
-              <div className="absolute inset-0 border-[3px] border-[color:var(--accent)]/20 rounded-full"></div>
-              <Image
-                src="/profile-picture.png"
-                alt="Esaw Adhana"
-                fill
-                className="object-cover scale-[1.2] object-[center_top]"
-                priority
-              />
-            </div>
-          </AnimatedElement>
-
-          <div className="text-center md:text-left flex-grow">
-            <AnimatedElement delay={0.2}>
-              <h1 className="text-4xl md:text-5xl font-bold mb-3 theme-text">
-                Hi, I&apos;m <span className="theme-accent relative">
-                  Esaw Adhana.
-                  <span className="absolute bottom-1 left-0 w-full h-1 bg-[color:var(--accent)]/30"></span>
-                </span>
-              </h1>
-            </AnimatedElement>
-            
-            <AnimatedElement delay={0.3}>
-              <p className="text-xl theme-text-secondary mb-4">
-                Junior at Stanford University studying Computer Science.
-              </p>
-            </AnimatedElement>
-
-            <AnimatedElement delay={0.4}>
-              <div className="flex items-center gap-3 mt-4 max-w-xs mx-auto md:mx-0 mb-6">
-                <div className="h-px flex-grow bg-[color:var(--card-accent)]"></div>
-                <span className="text-sm text-[color:var(--foreground)] opacity-60">Stanford &apos;27</span>
-                <div className="h-px flex-grow bg-[color:var(--card-accent)]"></div>
-              </div>
-            </AnimatedElement>
-
-            {/* Quick Contact Links */}
-            <AnimatedElement delay={0.5}>
-              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                <a 
-                  href="mailto:adhanaesaw@gmail.com"
-                  className="flex items-center gap-2 px-4 py-2 theme-card rounded-lg hover:bg-[color:var(--accent)]/10 transition-colors"
+        <section id="hero" ref={heroRef} className="mb-48 min-h-[85vh] flex items-center scroll-mt-14 snap-start py-8">
+          <motion.div 
+            style={{ opacity: heroOpacity, y: heroY }}
+            className="w-full"
+          >
+            <div className="grid grid-cols-12 gap-6 items-stretch">
+              {/* Main content */}
+              <div className="col-span-12 md:col-span-8 flex flex-col justify-center">
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="font-mono text-sm text-[color:var(--muted)] mb-3"
                 >
-                  <Mail className="w-4 h-4 text-[color:var(--accent)]" />
-                  <span className="text-sm font-medium theme-text">Email</span>
-                </a>
+                  Stanford &apos;27 / Computer Science (HCI Track)
+                </motion.p>
                 
-                <a 
-                  href="https://github.com/EsawAdhana"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 theme-card rounded-lg hover:bg-[color:var(--accent)]/10 transition-colors"
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="heading-display text-5xl md:text-7xl mb-4"
                 >
-                  <Github className="w-4 h-4 text-[color:var(--accent)]" />
-                  <span className="text-sm font-medium theme-text">GitHub</span>
-                </a>
+                  Hi, I&apos;m{' '}
+                  <span className="italic">Esaw</span>
+                  <span className="text-[color:var(--accent)]">.</span>
+                </motion.h1>
                 
-                <a 
-                  href="https://linkedin.com/in/EsawAdhana"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 theme-card rounded-lg hover:bg-[color:var(--accent)]/10 transition-colors"
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-lg text-[color:var(--muted)] max-w-xl leading-relaxed mb-5"
                 >
-                  <Linkedin className="w-4 h-4 text-[color:var(--accent)]" />
-                  <span className="text-sm font-medium theme-text">LinkedIn</span>
-                </a>
-
-                <a 
-                  href="https://instagram.com/esaw.adhana"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 theme-card rounded-lg hover:bg-[color:var(--accent)]/10 transition-colors"
-                >
-                  <Instagram className="w-4 h-4 text-[color:var(--accent)]" />
-                  <span className="text-sm font-medium theme-text">Instagram</span>
-                </a>
+                  I&apos;m a junior at Stanford University studying Computer Science.
+                  <br />
+                  Currently{' '}
+                  <span className="text-[color:var(--foreground)] font-medium inline-flex items-center gap-1">
+                    {typingText}
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                      className="text-[color:var(--accent)]"
+                    >
+                      |
+                    </motion.span>
+                  </span>
+                </motion.div>
               </div>
-            </AnimatedElement>
+
+            {/* Profile image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="col-span-12 md:col-span-4 flex justify-center md:justify-end h-full"
+            >
+              <motion.div 
+                className="relative w-full aspect-[3/2] md:aspect-[5/3] border border-[color:var(--border)] overflow-hidden group cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="absolute inset-0 bg-[color:var(--surface-alt)]">
+                  <Image
+                    src="/profile-picture.png"
+                    alt="Esaw Adhana"
+                    fill
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                    priority
+                  />
+                </div>
+                <motion.div 
+                  className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent"
+                  initial={{ opacity: 0.8 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  <p className="font-mono text-xs text-white/80">2025</p>
+                </motion.div>
+                <div className="absolute inset-0 bg-[color:var(--accent)]/0 group-hover:bg-[color:var(--accent)]/10 transition-colors duration-300" />
+              </motion.div>
+            </motion.div>
           </div>
+          </motion.div>
         </section>
 
         {/* About Section */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <AnimatedElement delay={0.6}>
-            <div className="p-6 theme-card h-full flex flex-col">
-              <div className="flex items-center justify-center mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--accent-light)] flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                  </div>
-                  <h2 className="text-xl font-bold theme-text">Technical Skills</h2>
-                </div>
-              </div>
-              <div className="flex-grow flex items-center justify-center">
-                <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
-                  {["Java", "Python", "Go", "C++", "React", "Next.js"].map((skill) => (
-                    <div
-                      key={skill}
-                      className="skill-tag text-center hover:scale-105 transition-transform"
-                    >
-                      {skill}
-                    </div>
-                  ))}
-                </div>
+        <section id="about" className="mb-48 py-16 scroll-mt-14 snap-start">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">About Me</p>
+                <h2 className="heading-display text-4xl md:text-5xl">About</h2>
               </div>
             </div>
-          </AnimatedElement>
-
-          <AnimatedElement delay={0.7}>
-            <div className="p-6 theme-card">
-              <div className="flex items-center justify-center mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--accent-light)] flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
+            <div className="grid grid-cols-12 gap-6">
+            {/* Skills */}
+            <motion.div 
+              className="col-span-12 md:col-span-5 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="flex items-center gap-2 mb-6">
+                <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
+                <p className="font-mono text-xs text-[color:var(--muted)]">01 / Technical</p>
+              </div>
+              <h3 className="heading-display text-2xl mb-6">Skills</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Languages</p>
+                  <div className="flex flex-wrap gap-2">
+                    {languages.map((skill) => (
+                      <motion.span 
+                        key={skill} 
+                        className="tag cursor-pointer"
+                        onMouseEnter={() => setHoveredSkill(skill)}
+                        onMouseLeave={() => setHoveredSkill(null)}
+                        whileHover={{ scale: 1.1, borderColor: 'var(--accent)' }}
+                        animate={{
+                          borderColor: hoveredSkill === skill ? 'var(--accent)' : 'var(--border-subtle)',
+                          color: hoveredSkill === skill ? 'var(--foreground)' : 'var(--muted)'
+                        }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {skill}
+                      </motion.span>
+                    ))}
                   </div>
-                  <h2 className="text-xl font-bold theme-text">Current Focus</h2>
                 </div>
-              </div>
-              <div className="text-center">
-                <p className="theme-text-secondary text-center leading-relaxed">
-                  Learning more about and entering the startup world.
-                </p>
-              </div>
-            </div>
-          </AnimatedElement>
-
-          <AnimatedElement delay={0.8}>
-            <div className="p-6 theme-card h-full flex flex-col">
-              <div className="flex items-center justify-center mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--accent-light)] flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-xl font-bold theme-text">Interests</h2>
-                </div>
-              </div>
-              <div className="flex-grow flex items-center justify-center">
-                <div className="text-center">
-                  <div className="grid grid-cols-1 gap-2 max-w-xs">
-                    {["Weightlifting", "Bouldering", "Surfing", "Poker", "Stocks/Trading"].map((interest) => (
-                      <div key={interest} className="flex items-center justify-center gap-2 text-sm theme-text-secondary">
-                        <span className="w-2 h-2 rounded-full bg-[color:var(--accent)]"></span>
-                        <span>{interest}</span>
-                      </div>
+                <div>
+                  <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Software & Tools</p>
+                  <div className="flex flex-wrap gap-2">
+                    {software.map((skill) => (
+                      <motion.span 
+                        key={skill} 
+                        className="tag cursor-pointer"
+                        onMouseEnter={() => setHoveredSkill(skill)}
+                        onMouseLeave={() => setHoveredSkill(null)}
+                        whileHover={{ scale: 1.1, borderColor: 'var(--accent)' }}
+                        animate={{
+                          borderColor: hoveredSkill === skill ? 'var(--accent)' : 'var(--border-subtle)',
+                          color: hoveredSkill === skill ? 'var(--foreground)' : 'var(--muted)'
+                        }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {skill}
+                      </motion.span>
                     ))}
                   </div>
                 </div>
               </div>
+            </motion.div>
+
+            {/* Current Focus */}
+            <motion.div 
+              className="col-span-12 md:col-span-7 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="flex items-center gap-2 mb-6">
+                <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
+                <p className="font-mono text-xs text-[color:var(--muted)]">02 / Now</p>
+              </div>
+              <h3 className="heading-display text-2xl mb-6">Focus</h3>
+              <p className="text-[color:var(--muted)] leading-relaxed">
+                Learning more about the B2C startup world.
+              </p>
+              <div className="mt-6 pt-6 border-t border-[color:var(--border-subtle)]">
+                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Currently working on</p>
+                <p className="text-sm text-[color:var(--foreground)]">Applying to startups and preparing for interviews.</p>
+              </div>
+            </motion.div>
+
+            {/* Interests */}
+            <motion.div 
+              className="col-span-12 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="flex items-center gap-2 mb-6">
+                <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
+                <p className="font-mono text-xs text-[color:var(--muted)]">03 / Life</p>
+              </div>
+              <h3 className="heading-display text-2xl mb-6">Hobbies</h3>
+              <div className="flex flex-wrap gap-x-8 gap-y-4">
+                {interests.map((interest, i) => (
+                  <motion.span 
+                    key={interest} 
+                    className="text-[color:var(--muted)] flex items-center gap-3 group/item cursor-pointer"
+                    whileHover={{ x: 4, color: 'var(--foreground)' }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <span className="font-mono text-xs text-[color:var(--accent)]">{String(i + 1).padStart(2, '0')}</span>
+                    {interest}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
             </div>
-          </AnimatedElement>
+          </motion.div>
         </section>
 
-        {/* Projects Carousel */}
-        <section>
+        {/* Projects Section */}
+        <section id="projects" className="mb-48 py-16 scroll-mt-14 snap-start">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold theme-text">Projects</h2>
-            </div>
-
-            <div className="relative">
-              {/* Carousel Container */}
-              <div className="theme-card overflow-hidden">
-                {currentProjectIndex === 0 && (
-                  <div className="bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-light)] h-2"></div>
-                )}
-                
-                <div className="p-8">
-                  {/* Project Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-2xl font-bold theme-text">{currentProject.title}</h3>
-                      {currentProjectIndex === 0 && (
-                        <div className="flex items-center gap-1 px-2 py-1 bg-[color:var(--accent)]/10 text-[color:var(--accent)] rounded-full">
-                          <Star className="w-4 h-4 fill-current" />
-                          <span className="text-sm font-medium">Featured</span>
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-sm theme-text-secondary">{currentProject.timeline}</span>
-                  </div>
-
-                  {/* Project Description */}
-                  <p className="theme-text-secondary mb-6 text-lg">{currentProject.description}</p>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {currentProject.technologies.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="skill-tag"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Project Points */}
-                  <div className="space-y-3 mb-6">
-                    {currentProject.points.map((point, pointIndex) => (
-                      <p key={pointIndex} className="theme-text-secondary flex items-start">
-                        <span className="text-[color:var(--accent)] mr-2 font-bold">•</span>
-                        <span>{point}</span>
-                      </p>
-                    ))}
-                  </div>
-
-                  {/* Project Link */}
-                  {currentProject.link && (
-                    <a
-                      href={currentProject.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[image:var(--button-bg)] hover:bg-[image:var(--button-hover)] text-white rounded-md transition-colors font-medium"
-                    >
-                      View Project
-                      <ExternalLink size={18} />
-                    </a>
-                  )}
-                </div>
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Selected Work</p>
+                <h2 className="heading-display text-4xl md:text-5xl">Projects</h2>
               </div>
-
-              {/* Navigation Controls */}
-              <button
-                onClick={prevProject}
-                className="absolute -left-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[color:var(--card-accent)] hover:bg-[color:var(--accent)]/20 transition-colors flex items-center justify-center group shadow-md"
-                aria-label="Previous project"
-              >
-                <ChevronLeft className="w-4 h-4 text-[color:var(--accent)] group-hover:scale-110 transition-transform" />
-              </button>
-
-              <button
-                onClick={nextProject}
-                className="absolute -right-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[color:var(--card-accent)] hover:bg-[color:var(--accent)]/20 transition-colors flex items-center justify-center group shadow-md"
-                aria-label="Next project"
-              >
-                <ChevronRight className="w-4 h-4 text-[color:var(--accent)] group-hover:scale-110 transition-transform" />
-              </button>
             </div>
 
-            {/* Project Indicators */}
-            <div className="flex justify-center mt-6 gap-2">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentProjectIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentProjectIndex
-                      ? 'bg-[color:var(--accent)] scale-110'
-                      : 'bg-[color:var(--card-accent)] hover:bg-[color:var(--accent)]/50'
-                  }`}
-                  aria-label={`Go to project ${index + 1}`}
-                />
+            <div className="space-y-2">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="group"
+                >
+                  <motion.button
+                    onClick={() => setActiveProject(activeProject === index ? null : index)}
+                    className="w-full text-left border border-[color:var(--border-subtle)] hover:border-[color:var(--border)] p-6 transition-all relative overflow-hidden"
+                    whileHover={{ x: 4 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2 flex-wrap">
+                          <span className="font-mono text-xs text-[color:var(--accent)]">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <h3 className="heading-display text-xl md:text-2xl group-hover:text-[color:var(--accent)] transition-colors">
+                            {project.title}
+                          </h3>
+                          {index === 0 && (
+                            <motion.span 
+                              className="font-mono text-xs text-[color:var(--accent)] border border-[color:var(--accent)] px-2 py-0.5"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              featured
+                            </motion.span>
+                          )}
+                        </div>
+                        <p className="text-[color:var(--muted)] text-sm md:text-base">
+                          {project.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="font-mono text-xs text-[color:var(--muted)] hidden md:block">
+                          {project.timeline}
+                        </span>
+                        <motion.span 
+                          animate={{ rotate: activeProject === index ? 45 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ArrowUpRight className="w-5 h-5" />
+                        </motion.span>
+                      </div>
+                    </div>
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {activeProject === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden border-x border-b border-[color:var(--border)] bg-[color:var(--surface)]"
+                      >
+                        <div className="p-6">
+                          <div className="grid grid-cols-12 gap-6">
+                            <div className="col-span-12 md:col-span-8">
+                              <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Details</p>
+                              <ul className="space-y-3">
+                                {project.points.map((point, i) => (
+                                  <motion.li 
+                                    key={i} 
+                                    className="flex items-start gap-3 text-[color:var(--muted)]"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.1 }}
+                                  >
+                                    <span className="text-[color:var(--accent)] mt-1">—</span>
+                                    <span>{point}</span>
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="col-span-12 md:col-span-4">
+                              <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Tech Stack</p>
+                              <div className="flex flex-wrap gap-2 mb-6">
+                                {project.technologies.map((tech, i) => (
+                                  <motion.span 
+                                    key={tech} 
+                                    className="tag"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: i * 0.05 }}
+                                    whileHover={{ scale: 1.1, borderColor: 'var(--accent)' }}
+                                  >
+                                    {tech}
+                                  </motion.span>
+                                ))}
+                              </div>
+                              {project.link && (
+                                <motion.a
+                                  href={project.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="btn-primary inline-flex group"
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  View Project
+                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </motion.a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               ))}
             </div>
           </motion.div>
         </section>
 
+        {/* Contact Section */}
+        <section id="contact" className="mb-48 py-16 scroll-mt-14 snap-start">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Get in Touch</p>
+                <h2 className="heading-display text-4xl md:text-5xl">Contact</h2>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-12 gap-6">
+              {/* Contact Info */}
+              <motion.div 
+                className="col-span-12 md:col-span-8 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center gap-2 mb-6">
+                  <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
+                  <p className="font-mono text-xs text-[color:var(--muted)]">01 / Message</p>
+                </div>
+                <h3 className="heading-display text-2xl mb-6">Get in Touch</h3>
+                <p className="text-[color:var(--muted)] leading-relaxed mb-6">
+                  I&apos;m always interested in hearing about new opportunities, interesting projects, or just connecting to meet someone new!
+                </p>
+                <motion.button
+                  onClick={() => setIsContactOpen(true)}
+                  className="btn-primary group"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Send a Message
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </motion.div>
+
+              {/* Social Links */}
+              <motion.div 
+                className="col-span-12 md:col-span-4 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center gap-2 mb-6">
+                  <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
+                  <p className="font-mono text-xs text-[color:var(--muted)]">02 / Social</p>
+                </div>
+                <h3 className="heading-display text-2xl mb-6">Links</h3>
+                <div className="flex flex-col gap-3">
+                  {socialLinks.map((link) => (
+                    <motion.a
+                      key={link.name}
+                      href={link.url}
+                      target={link.url.startsWith('mailto') ? undefined : '_blank'}
+                      rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                      className="flex items-center gap-3 text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors group/item"
+                      aria-label={link.name}
+                      whileHover={{ x: 4 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <link.icon className="w-5 h-5" />
+                      <span className="text-sm font-mono">{link.name}</span>
+                    </motion.a>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </section>
+        
+        {/* Footer */}
+        <footer className="pt-12 pb-8 border-t border-[color:var(--border-subtle)]">
+          <p className="font-mono text-xs text-[color:var(--muted)] text-center">
+            © 2025 Esaw Adhana
+          </p>
+        </footer>
       </div>
 
       {/* Contact Modal */}
-      {isContactModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setIsContactModalOpen(false)}
-          ></div>
-          
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="relative w-full max-w-md theme-card p-6 z-10"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold theme-text">Send Me a Message</h3>
-              <button
-                onClick={() => setIsContactModalOpen(false)}
-                className="p-2 rounded-full hover:bg-[color:var(--card-accent)] transition-colors"
-                aria-label="Close modal"
-              >
-                <svg className="w-5 h-5 theme-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+      <AnimatePresence>
+        {isContactOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50"
+              onClick={() => setIsContactOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-[color:var(--background)] border-l border-[color:var(--border)] z-50 overflow-auto"
+            >
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-12">
+                  <p className="font-mono text-xs text-[color:var(--muted)]">Contact</p>
+                  <button
+                    onClick={() => setIsContactOpen(false)}
+                    className="w-8 h-8 border border-[color:var(--border)] flex items-center justify-center hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)] transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <h2 className="heading-display text-3xl mb-2">
+                  Send a Message
+                </h2>
+                <p className="text-[color:var(--muted)] mb-8">
+                  I&apos;ll get back to you as soon as I can.
+                </p>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium theme-text mb-2">
+                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
                   Name
                 </label>
                 <input
@@ -455,52 +681,69 @@ export default function Home() {
                   className="form-input"
                   placeholder="Your name"
                 />
-                {errors.name && <span className="text-red-500 text-sm mt-1 block">Name is required</span>}
+                    {errors.name && <span className="text-[color:var(--accent)] text-sm mt-1 block">Required</span>}
               </div>
               
               <div>
-                <label htmlFor="email" className="block text-sm font-medium theme-text mb-2">
+                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
                   Email
                 </label>
                 <input
                   {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                   type="email"
                   className="form-input"
-                  placeholder="your.email@example.com"
+                      placeholder="you@example.com"
                 />
-                {errors.email && <span className="text-red-500 text-sm mt-1 block">Valid email is required</span>}
+                    {errors.email && <span className="text-[color:var(--accent)] text-sm mt-1 block">Valid email required</span>}
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium theme-text mb-2">
+                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
                   Message
                 </label>
                 <textarea
                   {...register("message", { required: true })}
-                  rows={4}
+                      rows={5}
                   className="form-input resize-none"
                   placeholder="Your message..."
                 />
-                {errors.message && <span className="text-red-500 text-sm mt-1 block">Message is required</span>}
+                    {errors.message && <span className="text-[color:var(--accent)] text-sm mt-1 block">Required</span>}
               </div>
 
               <button 
                 type="submit" 
                 disabled={isLoading} 
-                className="btn-primary w-full"
+                    className="btn-primary w-full justify-center"
               >
                 {isLoading ? 'Sending...' : 'Send Message'}
+                    <ArrowRight className="w-4 h-4" />
               </button>
 
               {isSubmitted && (
-                <div className="text-green-500 dark:text-green-400 text-center font-medium p-2 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-center font-mono text-sm text-green-600 dark:text-green-400"
+                    >
                   Message sent successfully!
+                    </motion.p>
+                  )}
+                </form>
+
+                <div className="mt-12 pt-8 border-t border-[color:var(--border-subtle)]">
+                  <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Or reach out directly</p>
+                  <a
+                    href="mailto:adhanaesaw@gmail.com"
+                    className="text-[color:var(--foreground)] hover:text-[color:var(--accent)] transition-colors"
+                  >
+                    adhanaesaw@gmail.com
+                  </a>
                 </div>
-              )}
-            </form>
+              </div>
           </motion.div>
-        </div>
+          </>
       )}
+      </AnimatePresence>
     </main>
   );
 }

@@ -1,151 +1,273 @@
+/* stylelint-disable */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* stylelint-enable */
 
 :root {
-  --background: #f3f0ee;
-  --foreground: #2a2a2a;
-  --card-bg: #ffffff;
-  --card-accent: #e6e1dd;
-  --input-bg: #ffffff;
-  --input-border: #dfd8d3;
-  --accent: #cb997e;
-  --accent-light: #ddbea9;
-  --button-bg: linear-gradient(135deg, #cb997e, #a5a58d);
-  --button-hover: linear-gradient(135deg, #b7876f, #90907c);
-  --card-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --background: #faf9f7;
+  --foreground: #1a1a1a;
+  --muted: #6b6b6b;
+  --border: #1a1a1a;
+  --border-subtle: #e0e0e0;
+  --accent: #c73e1d;
+  --accent-hover: #a83218;
+  --surface: #ffffff;
+  --surface-alt: #f0efed;
 }
 
 .dark {
-  --background: #1c1c22;
-  --foreground: #f0f0f0;
-  --card-bg: #27272f;
-  --card-accent: #32323e;
-  --input-bg: #2a2a32;
-  --input-border: #3a3a46;
-  --accent: #a06f51;
-  --accent-light: #bc8f76;
-  --button-bg: linear-gradient(135deg, #a06f51, #6b705c);
-  --button-hover: linear-gradient(135deg, #8c613e, #5d6250);
-  --card-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --background: #0f0f0f;
+  --foreground: #f5f5f5;
+  --muted: #8a8a8a;
+  --border: #f5f5f5;
+  --border-subtle: #2a2a2a;
+  --accent: #ff5a36;
+  --accent-hover: #ff7a5c;
+  --surface: #1a1a1a;
+  --surface-alt: #141414;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  background-image: 
-    radial-gradient(at 70% 20%, rgba(203, 153, 126, 0.07) 0px, transparent 50%),
-    radial-gradient(at 30% 80%, rgba(165, 165, 141, 0.07) 0px, transparent 50%);
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
   overflow-x: hidden;
 }
 
-.dark body {
-  background-image: 
-    radial-gradient(at 70% 20%, rgba(160, 111, 81, 0.1) 0px, transparent 50%),
-    radial-gradient(at 30% 80%, rgba(107, 112, 92, 0.1) 0px, transparent 50%);
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+  line-height: 1.6;
 }
 
-/* Font variables for the Geist fonts */
-.font-geist {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+/* Typography */
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
 }
 
-.font-geist-mono {
-  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+.font-mono {
+  font-family: var(--font-mono), 'Courier New', monospace;
 }
 
-/* Custom classes for theme consistency */
-@layer components {
-  .theme-card {
-    @apply relative bg-[color:var(--card-bg)] dark:bg-[color:var(--card-bg)] rounded-xl shadow-md border border-[color:var(--card-accent)] dark:border-[color:var(--card-accent)] overflow-hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .theme-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-light));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .theme-card:hover::before {
-    opacity: 1;
-  }
-  
-  .theme-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-shadow);
-  }
-  
-  .theme-bg {
-    @apply bg-[color:var(--background)] dark:bg-[color:var(--background)];
-  }
-  
-  .theme-text {
-    @apply text-[color:var(--foreground)] dark:text-[color:var(--foreground)];
-  }
-  
-  .theme-text-secondary {
-    @apply text-[color:var(--foreground)] dark:text-[color:var(--foreground)] opacity-80;
-  }
-  
-  .theme-accent {
-    @apply text-[color:var(--accent)] dark:text-[color:var(--accent)];
-  }
-  
-  /* Form element styling */
-  .form-input {
-    @apply w-full px-4 py-3 bg-[color:var(--input-bg)] dark:bg-[color:var(--input-bg)] border border-[color:var(--input-border)] dark:border-[color:var(--input-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)] dark:focus:ring-[color:var(--accent)] focus:border-transparent transition-colors;
-  }
-  
-  .btn-primary {
-    @apply px-6 py-3 bg-[image:var(--button-bg)] hover:bg-[image:var(--button-hover)] text-white rounded-lg font-medium transition-all;
-  }
-  
-  /* Skill tag styling */
-  .skill-tag {
-    @apply px-3 py-2 bg-[color:var(--card-accent)] dark:bg-[color:var(--card-accent)] text-[color:var(--foreground)] dark:text-[color:var(--foreground)] text-opacity-90 dark:text-opacity-90 rounded-lg text-sm border border-transparent transition-all font-medium;
-  }
-  
-  .skill-tag:hover {
-    @apply border-[color:var(--accent)] dark:border-[color:var(--accent)];
-    background-color: rgba(203, 153, 126, 0.1);
-  }
-  
-  .dark .skill-tag:hover {
-    background-color: rgba(160, 111, 81, 0.1);
-  }
-  
-  /* Animation classes */
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-1;
-  }
-  
-  .subtle-shadow {
-    @apply shadow-md hover:shadow-lg transition-shadow duration-300;
-  }
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: white;
 }
 
-/* Custom scrollbar for WebKit browsers */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--card-accent);
-  border-radius: 10px;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-light);
-  border-radius: 10px;
+  background: var(--border-subtle);
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Component styles */
+/* stylelint-disable-next-line at-rule-no-unknown */
+@layer components {
+  /* Editorial heading style */
+  .heading-display {
+    @apply font-serif text-[color:var(--foreground)] leading-[1.1] tracking-[-0.02em];
+  }
+  
+  /* Mono label style */
+  .label-mono {
+    @apply font-mono text-xs uppercase tracking-[0.15em] text-[color:var(--muted)];
+  }
+  
+  /* Sharp bordered box */
+  .box-sharp {
+    @apply border border-[color:var(--border)] bg-[color:var(--surface)];
+  }
+  
+  /* Subtle bordered box */
+  .box-subtle {
+    @apply border border-[color:var(--border-subtle)] bg-[color:var(--surface)];
+  }
+  
+  /* Accent link style */
+  .link-accent {
+    @apply text-[color:var(--accent)] hover:text-[color:var(--accent-hover)] transition-colors;
+  }
+  
+  /* Underline link */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-px bg-current transform origin-left transition-transform duration-300;
+  }
+  
+  .link-underline:hover::after {
+    @apply scale-x-0;
+  }
+  
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-3 bg-[color:var(--foreground)] text-[color:var(--background)] font-medium transition-all hover:gap-4;
+  }
+  
+  .btn-primary:hover {
+    background: var(--accent);
+  }
+  
+  /* Secondary button */
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-3 border border-[color:var(--border)] text-[color:var(--foreground)] font-medium transition-all hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)];
+  }
+  
+  /* Form inputs */
+  .form-input {
+    @apply w-full px-4 py-3 bg-[color:var(--surface)] border border-[color:var(--border-subtle)] text-[color:var(--foreground)] placeholder:text-[color:var(--muted)] focus:outline-none focus:border-[color:var(--border)] transition-colors;
+  }
+  
+  /* Divider */
+  .divider {
+    @apply w-full h-px bg-[color:var(--border-subtle)];
+  }
+  
+  /* Tag/pill without rounded corners */
+  .tag {
+    @apply inline-flex items-center px-2 py-1 border border-[color:var(--border-subtle)] text-[color:var(--muted)] font-mono text-xs;
+  }
+  
+  /* Hover card effect */
+  .card-hover {
+    @apply transition-all duration-300;
+  }
+  
+  .card-hover:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  
+  /* Grid pattern background */
+  .bg-grid {
+    background-image: 
+      linear-gradient(var(--border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+
+/* Initially hidden for animation */
+.animate-fade-up,
+.animate-slide-in {
+  opacity: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced hover effects */
+@layer components {
+  .hover-lift {
+    @apply transition-transform duration-300;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Interactive border glow */
+  .interactive-border {
+    position: relative;
+  }
+  
+  .interactive-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: linear-gradient(var(--accent), var(--accent)) padding-box,
+                linear-gradient(45deg, var(--accent), transparent) border-box;
+  }
+  
+  .interactive-border:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Scroll progress indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
   background: var(--accent);
+  transform-origin: left;
+  z-index: 100;
+  transition: transform 0.1s;
 }
