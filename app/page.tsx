@@ -221,7 +221,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="font-mono text-sm text-[color:var(--muted)] mb-3"
+                  className="font-mono text-base md:text-lg text-[color:var(--muted)] mb-4"
                 >
                   Stanford &apos;27 / Computer Science (HCI Track)
                 </motion.p>
@@ -241,21 +241,26 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-lg text-[color:var(--muted)] max-w-xl leading-relaxed mb-5"
+                  className="text-xl md:text-xl text-[color:var(--muted)] max-w-xl leading-relaxed mb-5"
                 >
-                  I&apos;m a junior at Stanford University studying Computer Science.
-                  <br />
-                  Currently{' '}
-                  <span className="text-[color:var(--foreground)] font-medium inline-flex items-center gap-1">
-                    {typingText}
-                    <motion.span
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                      className="text-[color:var(--accent)]"
-                    >
-                      |
-                    </motion.span>
-                  </span>
+                  <p className="mb-2">
+                    I&apos;m a junior at Stanford studying Computer Science,
+                    <br />
+                    based out of the Seattle area.
+                  </p>
+                  <p>
+                    Currently{' '}
+                    <span className="text-[color:var(--foreground)] font-medium inline-flex items-center gap-1">
+                      {typingText}
+                      <motion.span
+                        animate={{ opacity: [1, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                        className="text-[color:var(--accent)]"
+                      >
+                        |
+                      </motion.span>
+                    </span>
+                  </p>
                 </motion.div>
               </div>
 
