@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import Image from 'next/image';
-import { useTheme } from './context/ThemeContext';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, X, Github, Linkedin, Instagram, Mail, Sun, Moon, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, X, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
 import type { ProjectType } from './lib/types';
 
 type FormData = {
@@ -72,7 +71,6 @@ const typingTexts = [
 ];
 
 export default function Home() {
-  const { theme, toggleTheme } = useTheme();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -166,14 +164,14 @@ export default function Home() {
       
       {/* Fixed header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-[color:var(--border-subtle)] bg-[color:var(--background)]/90 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center relative">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between relative">
           <button 
             onClick={() => scrollToSection('hero')}
-            className="absolute left-6 font-mono text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
+            className="hidden md:block font-mono text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
           >
             esaw adhana
           </button>
-          <nav className="flex items-center justify-center gap-8 md:gap-12">
+          <nav className="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 flex-1 md:flex-none">
             <button 
               onClick={() => scrollToSection('about')}
               className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
@@ -193,17 +191,6 @@ export default function Home() {
               contact
             </button>
           </nav>
-          <button 
-            onClick={toggleTheme} 
-            className="absolute right-6 w-8 h-8 border border-[color:var(--border-subtle)] flex items-center justify-center hover:border-[color:var(--border)] transition-colors"
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
-          </button>
         </div>
       </header>
 
