@@ -26,7 +26,7 @@ const projects: ProjectType[] = [
       "Built React Native mobile app integrated with Supabase to manage user data in real time",
       "Earned 'Best Demo Award' at Stanford's CS 147 2025 Expo for excellence in design"
     ],
-    link: "https://hci.stanford.edu/courses/cs147/2025/au/projects/AdultingMadeEasier/LetEmCook/"
+    link: "https://web.stanford.edu/class/cs147/projects/AdultingMadeEasier/LetEmCook/"
   },
   {
     title: "ScentSync",
