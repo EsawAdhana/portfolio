@@ -156,19 +156,34 @@ export default function Home() {
 
   // Smooth scroll function
   const scrollToSection = (id: string) => {
-    // Contact: scroll to the bottom of the page so the footer is in view (not just section top).
+    const headerHeight = 56; // h-14 = 56px
+
+    // Contact: prefer scrolling to the true bottom so the footer is in view. If the
+    // contact section starts above the viewport at max scroll (common on narrow/tall
+    // viewports), bottom scroll hides the contact—align to the section instead.
     if (id === 'contact') {
-      const maxScroll = Math.max(
-        0,
-        document.documentElement.scrollHeight - window.innerHeight
-      );
-      window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+      const element = document.getElementById('contact');
+      if (element) {
+        const maxScroll = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight
+        );
+        const contactTop =
+          element.getBoundingClientRect().top + window.pageYOffset;
+        if (contactTop < maxScroll) {
+          window.scrollTo({
+            top: contactTop - headerHeight,
+            behavior: 'smooth',
+          });
+        } else {
+          window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+        }
+      }
       return;
     }
 
     const element = document.getElementById(id);
     if (element) {
-      const headerHeight = 56; // h-14 = 56px
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - headerHeight;
 
