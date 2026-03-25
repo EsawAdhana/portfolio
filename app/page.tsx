@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, X, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, ExternalLink, X, Github, Linkedin, Instagram, Mail, Sparkles, FileText } from 'lucide-react';
 import type { ProjectType } from './lib/types';
+import { ProjectImageCarousel } from './components/ProjectImageCarousel';
 
 type FormData = {
   name: string;
@@ -16,59 +17,86 @@ type FormData = {
 
 const projects: ProjectType[] = [
   {
-    title: "Let 'Em Cook!",
-    description: "Social cooking app that turns meal prep into a friendly competition",
-    technologies: ["React Native", "TypeScript", "Supabase"],
-    timeline: "Sept. 2025 – Dec. 2025",
+    title: "Stanford Root",
+    description:
+      "Course discovery mobile + web app for the Stanford student community",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase"],
+    timeline: "Jan. 2026 – Present",
     points: [
-      "Developed social cooking app allowing users to create and submit to cooking challenges and vote on favorite community submissions",
-      "Applied iterative design process from Stanford's CS 147 to conduct needfinding interviews, build experience prototypes, and create early Figma mockups",
-      "Built React Native mobile app integrated with Supabase to manage user data in real time",
-      "Earned 'Best Demo Award' at Stanford's CS 147 2025 Expo for excellence in design"
+      "Built course discovery/planning mobile + web app for fellow Stanford students, integrating multi-filter search, GER class tracking, and cross-device schedule synchronization",
+      "Developed custom data pipeline using Puppeteer and Cheerio to ingest and structure years of unstructured course evaluation data into a high-performance Supabase schema",
+      "Optimized system latency through multi-layer caching and two-phase data loading, achieving sub-200ms repeat load times for a catalog of 10,000+ courses",
     ],
-    link: "https://web.stanford.edu/class/cs147/projects/AdultingMadeEasier/LetEmCook/"
+    link: "https://stanfordroot.com",
+    linkNote: "Note an @stanford.edu email address is required",
+    gallery: [
+      "/projects/stanford-root/01.png",
+      "/projects/stanford-root/02.png",
+      "/projects/stanford-root/03.png",
+      "/projects/stanford-root/04.png",
+      "/projects/stanford-root/05.png",
+    ],
   },
   {
-    title: "ScentSync",
-    description: "Recommendation engine to match EWG health and beauty products for personalized, eco-friendly routines",
-    technologies: ["TypeScript", "Next.js", "MongoDB", "Tailwind CSS", "OpenAI API"],
-    timeline: "Jan. 2025 – Mar. 2025",
+    title: "Let 'em Cook",
+    description:
+      "Social cooking app for young adults, focus on building community and trying new things",
+    technologies: ["React Native", "TypeScript", "Supabase"],
+    timeline: "Sep. 2025 – Dec. 2025",
     points: [
-      "Developed recommendation engine to match EWG health and beauty products to suggest personalized, eco-friendly routines in line with user preferences",
-      "Engineered web scraping module to collect and store data of 1,000+ products from EWG database"
+      "Grounded in needfinding: we found cooking felt like a chore, and there was little fun or motivation for young adults, leading us in a social game-like direction",
+      "Built social mobile app allowing users to create + join cooking competitions with fellow users and then cook and digitally share their creations with each another",
+      "Led our four-person team through all stages of the CS 147 design cycle, from early prototyping to final product, incorporating user feedback throughout, and winning the Best Demo Award for our final app",
     ],
-    link: "https://stanfordscentsync.vercel.app/"
+    link: "/projects/let-em-cook/upscaled-video.mp4",
+    linkLabel: "Demo video",
   },
   {
     title: "PropaGONE",
-    description: "Chrome extension integrating Claude to detect and explain propaganda and manipulative language",
-    technologies: ["Python", "React", "JavaScript", "Claude API"],
-    timeline: "Apr. 2024 – June 2024",
+    description: "Chrome extension integrating Claude to detect propaganda and manipulative language",
+    technologies: ["React", "Python", "JavaScript", "Claude API"],
+    timeline: "Apr. 2024 – Jun. 2024",
     points: [
-      "Developed Chrome extension integrating Claude to detect and explain propaganda and manipulative language across online news articles in under 3 seconds",
-      "Implemented user feedback integration via thumbs up/down signaling to fine-tune model responses and improve detection accuracy over time"
+      "Developed Chrome extension integrating Claude that detects and explains propaganda and manipulative language in online news articles within 3 seconds",
+      "Designed user feedback integration via thumbs up/down signaling to fine-tune model responses and improve detection accuracy over time",
     ],
-    link: "https://drive.google.com/file/d/1dMb5b81XKFC9oI6_AM7halHBLDNUwOXV/view?usp=sharing"
-  }
+    link: "https://drive.google.com/file/d/1dMb5b81XKFC9oI6_AM7halHBLDNUwOXV/view?usp=sharing",
+    linkLabel: "Read Paper",
+  },
 ];
 
 const socialLinks = [
   { name: 'GitHub', url: 'https://github.com/EsawAdhana', icon: Github },
-  { name: 'LinkedIn', url: 'https://linkedin.com/in/EsawAdhana', icon: Linkedin },
+  { name: 'LinkedIn', url: 'https://linkedin.com/in/esawadhana', icon: Linkedin },
   { name: 'Instagram', url: 'https://instagram.com/esaw.adhana', icon: Instagram },
+  { name: 'Resume', url: '/resume.pdf', icon: FileText },
   { name: 'Email', url: 'mailto:adhanaesaw@gmail.com', icon: Mail },
 ];
 
 const languages = ["Java", "Python", "Go", "C", "C++", "HTML", "CSS", "JavaScript", "TypeScript"];
 const software = ["GitHub", "Git", "Next.js", "MongoDB", "Firebase", "Supabase", "React Native", "Excel"];
-const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Improv"];
+const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Espresso"];
 
 const typingTexts = [
   "drinking an iced mocha",
   "projecting a V5 boulder",
   "hitting push day at the gym",
-  "playing a home game of poker"
+  "hosting a game of poker"
 ];
+
+function linkDisplayHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return 'Open link';
+  }
+}
+
+function projectLinkLabel(project: ProjectType): string {
+  if (project.linkLabel) return project.linkLabel;
+  if (!project.link) return '';
+  return linkDisplayHost(project.link);
+}
 
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -76,8 +104,12 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [typingText, setTypingText] = useState('');
-  const [typingIndex, setTypingIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+  /** Ref-driven state machine so one effect schedules variable delays (smoother than fixed 100/50ms ticks). */
+  const typingMachineRef = useRef({
+    phraseIndex: 0,
+    charIndex: 0,
+    deleting: false,
+  });
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
   const heroRef = useRef<HTMLElement | null>(null);
@@ -85,34 +117,55 @@ export default function Home() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
 
-  // Typing animation effect
+  // Typing animation: variable delays feel less mechanical; single effect avoids per-char effect churn
   useEffect(() => {
-    const currentText = typingTexts[typingIndex];
-    let timeout: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
-    if (!isDeleting && typingText.length < currentText.length) {
-      timeout = setTimeout(() => {
-        setTypingText(currentText.slice(0, typingText.length + 1));
-      }, 100);
-    } else if (!isDeleting && typingText.length === currentText.length) {
-      timeout = setTimeout(() => {
-        setIsDeleting(true);
-      }, 2000);
-    } else if (isDeleting && typingText.length > 0) {
-      timeout = setTimeout(() => {
-        setTypingText(currentText.slice(0, typingText.length - 1));
-      }, 50);
-    } else if (isDeleting && typingText.length === 0) {
-      setIsDeleting(false);
-      setTypingIndex((prev) => (prev + 1) % typingTexts.length);
-    }
+    const jitter = (min: number, max: number) =>
+      min + Math.random() * (max - min);
 
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typingText, typingIndex, isDeleting]);
+    const tick = () => {
+      const m = typingMachineRef.current;
+      const phrase = typingTexts[m.phraseIndex];
+
+      if (!m.deleting) {
+        if (m.charIndex < phrase.length) {
+          m.charIndex += 1;
+          setTypingText(phrase.slice(0, m.charIndex));
+          timeoutId = setTimeout(tick, jitter(42, 88));
+        } else {
+          timeoutId = setTimeout(() => {
+            typingMachineRef.current.deleting = true;
+            tick();
+          }, jitter(1500, 2100));
+        }
+      } else if (m.charIndex > 0) {
+        m.charIndex -= 1;
+        setTypingText(phrase.slice(0, m.charIndex));
+        timeoutId = setTimeout(tick, jitter(18, 36));
+      } else {
+        m.deleting = false;
+        m.phraseIndex = (m.phraseIndex + 1) % typingTexts.length;
+        timeoutId = setTimeout(tick, jitter(220, 420));
+      }
+    };
+
+    timeoutId = setTimeout(tick, jitter(280, 520));
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // Smooth scroll function
   const scrollToSection = (id: string) => {
+    // Contact: scroll to the bottom of the page so the footer is in view (not just section top).
+    if (id === 'contact') {
+      const maxScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight
+      );
+      window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       const headerHeight = 56; // h-14 = 56px
@@ -167,26 +220,26 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between relative">
           <button 
             onClick={() => scrollToSection('hero')}
-            className="hidden md:block font-mono text-sm text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
+            className="hidden md:block text-portfolio-label hover:text-[color:var(--foreground)] transition-colors cursor-pointer"
           >
             esaw adhana
           </button>
-          <nav className="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 flex-1 md:flex-none">
+          <nav className="flex items-center justify-center gap-3 md:gap-6 lg:gap-10 flex-1 md:flex-none flex-wrap">
             <button 
               onClick={() => scrollToSection('about')}
-              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+              className="text-portfolio-label hover:text-[color:var(--foreground)] transition-colors"
             >
               about
             </button>
             <button 
               onClick={() => scrollToSection('projects')}
-              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+              className="text-portfolio-label hover:text-[color:var(--foreground)] transition-colors"
             >
               projects
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
-              className="font-mono text-xs text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+              className="text-portfolio-label hover:text-[color:var(--foreground)] transition-colors"
             >
               contact
             </button>
@@ -194,9 +247,9 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 pt-16 pb-8">
+      <div className="max-w-6xl mx-auto px-6 pt-16 pb-3">
         {/* Hero Section */}
-        <section id="hero" ref={heroRef} className="mb-48 min-h-[85vh] flex items-center scroll-mt-14 snap-start py-8">
+        <section id="hero" ref={heroRef} className="mb-48 min-h-[85vh] flex items-center scroll-mt-14 py-8">
           <motion.div 
             style={{ opacity: heroOpacity, y: heroY }}
             className="w-full"
@@ -204,48 +257,52 @@ export default function Home() {
             <div className="grid grid-cols-12 gap-6 items-stretch">
               {/* Main content */}
               <div className="col-span-12 md:col-span-8 flex flex-col justify-center">
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="font-mono text-base md:text-lg text-[color:var(--muted)] mb-4"
+                  className="mb-5 max-w-2xl space-y-1.5"
                 >
-                  Stanford &apos;27 / Computer Science (HCI Track)
-                </motion.p>
-                
+                  <p className="font-mono text-base md:text-lg text-[color:var(--foreground)] leading-snug tracking-tight">
+                    Stanford &apos;27 / Computer Science
+                  </p>
+                  <p className="font-mono text-sm md:text-base text-[color:var(--muted)] leading-snug">
+                    · Ex-Google · Ex-Uber
+                  </p>
+                </motion.div>
+
                 <motion.h1
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="heading-display text-5xl md:text-7xl mb-4"
+                  className="heading-display text-6xl md:text-8xl mb-5"
                 >
                   Hi, I&apos;m{' '}
                   <span className="italic">Esaw</span>
                   <span className="text-[color:var(--accent)]">.</span>
                 </motion.h1>
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-xl md:text-xl text-[color:var(--muted)] max-w-xl leading-relaxed mb-5"
+                  className="text-portfolio-body max-w-xl mb-5"
                 >
-                  <p className="mb-2">
-                    I&apos;m a junior at Stanford studying Computer Science,
-                    <br />
-                    based out of the Seattle area.
-                  </p>
                   <p>
                     Currently{' '}
-                    <span className="text-[color:var(--foreground)] font-medium inline-flex items-center gap-1">
+                    <span className="text-portfolio-body-strong inline-flex items-center gap-1">
                       {typingText}
                       <motion.span
-                        animate={{ opacity: [1, 0] }}
-                        transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                        className="text-[color:var(--accent)]"
-                      >
-                        |
-                      </motion.span>
+                        aria-hidden
+                        className="inline-block w-[0.06em] min-w-[2px] h-[1em] translate-y-[0.08em] rounded-[1px] bg-[color:var(--accent)] align-middle"
+                        animate={{ opacity: [1, 0.2] }}
+                        transition={{
+                          duration: 0.52,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "easeInOut",
+                        }}
+                      />
                     </span>
                   </p>
                 </motion.div>
@@ -272,13 +329,6 @@ export default function Home() {
                     priority
                   />
                 </div>
-                <motion.div 
-                  className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent"
-                  initial={{ opacity: 0.8 }}
-                  whileHover={{ opacity: 1 }}
-                >
-                  <p className="font-mono text-xs text-white/80">2025</p>
-                </motion.div>
                 <div className="absolute inset-0 bg-[color:var(--accent)]/0 group-hover:bg-[color:var(--accent)]/10 transition-colors duration-300" />
               </motion.div>
             </motion.div>
@@ -287,7 +337,7 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="mb-48 py-16 scroll-mt-14 snap-start">
+        <section id="about" className="mb-48 py-16 scroll-mt-14">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -296,33 +346,32 @@ export default function Home() {
           >
             <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">About Me</p>
-                <h2 className="heading-display text-4xl md:text-5xl">About</h2>
+                <h2 className="heading-display text-5xl md:text-6xl">About</h2>
               </div>
             </div>
             <div className="grid grid-cols-12 gap-6">
             {/* Skills */}
             <motion.div 
-              className="col-span-12 md:col-span-5 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
+              className="col-span-12 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
               whileHover={{ y: -4 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="flex items-center gap-2 mb-6">
                 <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
-                <p className="font-mono text-xs text-[color:var(--muted)]">01 / Technical</p>
+                <p className="text-portfolio-label">01 / Technical</p>
               </div>
-              <h3 className="heading-display text-2xl mb-6">Skills</h3>
+              <h3 className="text-portfolio-title mb-6">Skills</h3>
               <div className="space-y-4">
                 <div>
-                  <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Languages</p>
+                  <p className="text-portfolio-label mb-2">Languages</p>
                   <div className="flex flex-wrap gap-2">
                     {languages.map((skill) => (
                       <motion.span 
                         key={skill} 
-                        className="tag cursor-pointer"
+                        className="tag-skill cursor-pointer"
                         onMouseEnter={() => setHoveredSkill(skill)}
                         onMouseLeave={() => setHoveredSkill(null)}
-                        whileHover={{ scale: 1.1, borderColor: 'var(--accent)' }}
+                        whileHover={{ scale: 1.05, borderColor: 'var(--accent)' }}
                         animate={{
                           borderColor: hoveredSkill === skill ? 'var(--accent)' : 'var(--border-subtle)',
                           color: hoveredSkill === skill ? 'var(--foreground)' : 'var(--muted)'
@@ -335,15 +384,15 @@ export default function Home() {
                   </div>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Software & Tools</p>
+                  <p className="text-portfolio-label mb-2">Software & Tools</p>
                   <div className="flex flex-wrap gap-2">
                     {software.map((skill) => (
                       <motion.span 
                         key={skill} 
-                        className="tag cursor-pointer"
+                        className="tag-skill cursor-pointer"
                         onMouseEnter={() => setHoveredSkill(skill)}
                         onMouseLeave={() => setHoveredSkill(null)}
-                        whileHover={{ scale: 1.1, borderColor: 'var(--accent)' }}
+                        whileHover={{ scale: 1.05, borderColor: 'var(--accent)' }}
                         animate={{
                           borderColor: hoveredSkill === skill ? 'var(--accent)' : 'var(--border-subtle)',
                           color: hoveredSkill === skill ? 'var(--foreground)' : 'var(--muted)'
@@ -355,26 +404,6 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Current Focus */}
-            <motion.div 
-              className="col-span-12 md:col-span-7 border border-[color:var(--border)] p-6 group hover:border-[color:var(--accent)] transition-colors"
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="flex items-center gap-2 mb-6">
-                <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
-                <p className="font-mono text-xs text-[color:var(--muted)]">02 / Now</p>
-              </div>
-              <h3 className="heading-display text-2xl mb-6">Focus</h3>
-              <p className="text-[color:var(--muted)] leading-relaxed">
-                Learning more about the B2C startup world.
-              </p>
-              <div className="mt-6 pt-6 border-t border-[color:var(--border-subtle)]">
-                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Currently working on</p>
-                <p className="text-sm text-[color:var(--foreground)]">Applying to startups and preparing for interviews.</p>
               </div>
             </motion.div>
 
@@ -386,18 +415,18 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 mb-6">
                 <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
-                <p className="font-mono text-xs text-[color:var(--muted)]">03 / Life</p>
+                <p className="text-portfolio-label">02 / Life</p>
               </div>
-              <h3 className="heading-display text-2xl mb-6">Hobbies</h3>
+              <h3 className="text-portfolio-title mb-6">Hobbies</h3>
               <div className="flex flex-wrap gap-x-8 gap-y-4">
                 {interests.map((interest, i) => (
                   <motion.span 
                     key={interest} 
-                    className="text-[color:var(--muted)] flex items-center gap-3 group/item cursor-pointer"
+                    className="text-portfolio-body flex items-center gap-3 group/item cursor-pointer"
                     whileHover={{ x: 4, color: 'var(--foreground)' }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <span className="font-mono text-xs text-[color:var(--accent)]">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-portfolio-label text-[color:var(--accent)]">{String(i + 1).padStart(2, '0')}</span>
                     {interest}
                   </motion.span>
                 ))}
@@ -408,7 +437,7 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="mb-48 py-16 scroll-mt-14 snap-start">
+        <section id="projects" className="mb-48 py-16 scroll-mt-14">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -417,8 +446,7 @@ export default function Home() {
           >
             <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Selected Work</p>
-                <h2 className="heading-display text-4xl md:text-5xl">Projects</h2>
+                <h2 className="heading-display text-5xl md:text-6xl">Projects</h2>
               </div>
             </div>
 
@@ -442,34 +470,35 @@ export default function Home() {
                     <div className="relative flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2 flex-wrap">
-                          <span className="font-mono text-xs text-[color:var(--accent)]">
+                          <span className="text-portfolio-label text-[color:var(--accent)]">
                             {String(index + 1).padStart(2, '0')}
                           </span>
-                          <h3 className="heading-display text-xl md:text-2xl group-hover:text-[color:var(--accent)] transition-colors">
+                          <h3 className="text-portfolio-title group-hover:text-[color:var(--accent)] transition-colors">
                             {project.title}
                           </h3>
                           {index === 0 && (
                             <motion.span 
-                              className="font-mono text-xs text-[color:var(--accent)] border border-[color:var(--accent)] px-2 py-0.5"
+                              className="text-portfolio-label text-[color:var(--accent)] border border-[color:var(--accent)] px-2 py-0.5"
                               whileHover={{ scale: 1.05 }}
                             >
                               featured
                             </motion.span>
                           )}
                         </div>
-                        <p className="text-[color:var(--muted)] text-sm md:text-base">
+                        <p className="text-portfolio-body">
                           {project.description}
                         </p>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className="font-mono text-xs text-[color:var(--muted)] hidden md:block">
+                        <span className="text-portfolio-label hidden md:block">
                           {project.timeline}
                         </span>
-                        <motion.span 
-                          animate={{ rotate: activeProject === index ? 45 : 0 }}
+                        <motion.span
+                          animate={{ rotate: activeProject === index ? 180 : 0 }}
                           transition={{ duration: 0.3 }}
+                          className="text-[color:var(--muted)]"
                         >
-                          <ArrowUpRight className="w-5 h-5" />
+                          <ChevronDown className="w-5 h-5" aria-hidden />
                         </motion.span>
                       </div>
                     </div>
@@ -485,14 +514,22 @@ export default function Home() {
                         className="overflow-hidden border-x border-b border-[color:var(--border)] bg-[color:var(--surface)]"
                       >
                         <div className="p-6">
+                          {project.gallery && project.gallery.length > 0 && (
+                            <div className="mb-6">
+                              <ProjectImageCarousel
+                                images={project.gallery}
+                                label={project.title}
+                              />
+                            </div>
+                          )}
                           <div className="grid grid-cols-12 gap-6">
                             <div className="col-span-12 md:col-span-8">
-                              <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Details</p>
+                              <p className="text-portfolio-label mb-4">Details</p>
                               <ul className="space-y-3">
                                 {project.points.map((point, i) => (
                                   <motion.li 
                                     key={i} 
-                                    className="flex items-start gap-3 text-[color:var(--muted)]"
+                                    className="flex items-start gap-3 text-portfolio-body"
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.1 }}
@@ -504,7 +541,7 @@ export default function Home() {
                               </ul>
                             </div>
                             <div className="col-span-12 md:col-span-4">
-                              <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Tech Stack</p>
+                              <p className="text-portfolio-label mb-4">Tech Stack</p>
                               <div className="flex flex-wrap gap-2 mb-6">
                                 {project.technologies.map((tech, i) => (
                                   <motion.span 
@@ -520,17 +557,25 @@ export default function Home() {
                                 ))}
                               </div>
                               {project.link && (
-                                <motion.a
-                                  href={project.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="btn-primary inline-flex group"
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  View Project
-                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </motion.a>
+                                <div>
+                                  <a
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 text-portfolio-body text-[color:var(--foreground)] transition-colors hover:text-[color:var(--accent)] group/live"
+                                  >
+                                    {projectLinkLabel(project)}
+                                    <ExternalLink
+                                      className="h-4 w-4 shrink-0 opacity-50 group-hover/live:opacity-90"
+                                      aria-hidden
+                                    />
+                                  </a>
+                                  {project.linkNote && (
+                                    <p className="mt-2 text-sm text-[color:var(--muted)] leading-relaxed">
+                                      {project.linkNote}
+                                    </p>
+                                  )}
+                                </div>
                               )}
                             </div>
                           </div>
@@ -545,7 +590,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="mb-40 py-16 scroll-mt-14 snap-start">
+        <section id="contact" className="mb-40 py-16 scroll-mt-14">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -554,8 +599,7 @@ export default function Home() {
           >
             <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="font-mono text-xs text-[color:var(--muted)] mb-2">Get in Touch</p>
-                <h2 className="heading-display text-4xl md:text-5xl">Contact</h2>
+                <h2 className="heading-display text-5xl md:text-6xl">Contact</h2>
               </div>
             </div>
             
@@ -568,20 +612,21 @@ export default function Home() {
               >
                 <div className="flex items-center gap-2 mb-6">
                   <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
-                  <p className="font-mono text-xs text-[color:var(--muted)]">01 / Message</p>
+                  <p className="text-portfolio-label">01 / Message</p>
                 </div>
-                <h3 className="heading-display text-2xl mb-6">Get in Touch</h3>
-                <p className="text-[color:var(--muted)] leading-relaxed mb-6">
+                <p className="text-portfolio-body mb-6">
                   I&apos;m always interested in hearing about new opportunities, interesting projects, or just connecting to meet someone new!
                 </p>
                 <motion.button
                   onClick={() => setIsContactOpen(true)}
-                  className="btn-primary group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="btn-contact group"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
-                  Send a Message
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Mail className="w-4 h-4 shrink-0" aria-hidden />
+                  Send a message
+                  <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
                 </motion.button>
               </motion.div>
 
@@ -593,9 +638,9 @@ export default function Home() {
               >
                 <div className="flex items-center gap-2 mb-6">
                   <Sparkles className="w-4 h-4 text-[color:var(--accent)]" />
-                  <p className="font-mono text-xs text-[color:var(--muted)]">02 / Social</p>
+                  <p className="text-portfolio-label">02 / Social</p>
                 </div>
-                <h3 className="heading-display text-2xl mb-6">Links</h3>
+                <h3 className="text-portfolio-title mb-6">Links</h3>
                 <div className="flex flex-col gap-3">
                   {socialLinks.map((link) => (
                     <motion.a
@@ -609,7 +654,7 @@ export default function Home() {
                       transition={{ type: "spring", stiffness: 400 }}
                     >
                       <link.icon className="w-5 h-5" />
-                      <span className="text-sm font-mono">{link.name}</span>
+                      <span className="text-portfolio-label">{link.name}</span>
                     </motion.a>
                   ))}
                 </div>
@@ -619,9 +664,9 @@ export default function Home() {
         </section>
         
         {/* Footer */}
-        <footer className="pt-8 pb-8 border-t border-[color:var(--border-subtle)]">
-          <p className="font-mono text-xs text-[color:var(--muted)] text-center">
-            © 2025 Esaw Adhana
+        <footer className="pt-8 pb-3 border-t border-[color:var(--border-subtle)]">
+          <p className="text-portfolio-label text-center">
+            © {new Date().getFullYear()} Esaw Adhana
           </p>
         </footer>
       </div>
@@ -646,7 +691,7 @@ export default function Home() {
             >
               <div className="p-8">
                 <div className="flex items-center justify-between mb-12">
-                  <p className="font-mono text-xs text-[color:var(--muted)]">Contact</p>
+                  <p className="text-portfolio-label">Contact</p>
                   <button
                     onClick={() => setIsContactOpen(false)}
                     className="w-8 h-8 border border-[color:var(--border)] flex items-center justify-center hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)] transition-colors"
@@ -655,16 +700,16 @@ export default function Home() {
                   </button>
                 </div>
 
-                <h2 className="heading-display text-3xl mb-2">
+                <h2 className="text-portfolio-title mb-2">
                   Send a Message
                 </h2>
-                <p className="text-[color:var(--muted)] mb-8">
+                <p className="text-portfolio-body mb-8">
                   I&apos;ll get back to you as soon as I can.
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
+                    <label className="text-portfolio-label mb-2 block">
                   Name
                 </label>
                 <input
@@ -673,11 +718,11 @@ export default function Home() {
                   className="form-input"
                   placeholder="Your name"
                 />
-                    {errors.name && <span className="text-[color:var(--accent)] text-sm mt-1 block">Required</span>}
+                    {errors.name && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Required</span>}
               </div>
               
               <div>
-                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
+                    <label className="text-portfolio-label mb-2 block">
                   Email
                 </label>
                 <input
@@ -686,11 +731,11 @@ export default function Home() {
                   className="form-input"
                       placeholder="you@example.com"
                 />
-                    {errors.email && <span className="text-[color:var(--accent)] text-sm mt-1 block">Valid email required</span>}
+                    {errors.email && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Valid email required</span>}
               </div>
 
               <div>
-                    <label className="font-mono text-xs text-[color:var(--muted)] mb-2 block">
+                    <label className="text-portfolio-label mb-2 block">
                   Message
                 </label>
                 <textarea
@@ -699,23 +744,23 @@ export default function Home() {
                   className="form-input resize-none"
                   placeholder="Your message..."
                 />
-                    {errors.message && <span className="text-[color:var(--accent)] text-sm mt-1 block">Required</span>}
+                    {errors.message && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Required</span>}
               </div>
 
               <button 
                 type="submit" 
                 disabled={isLoading} 
-                    className="btn-primary w-full justify-center"
+                className="btn-contact w-full justify-center"
               >
-                {isLoading ? 'Sending...' : 'Send Message'}
-                    <ArrowRight className="w-4 h-4" />
+                {isLoading ? 'Sending...' : 'Send message'}
+                {!isLoading && <ArrowRight className="w-4 h-4 shrink-0" aria-hidden />}
               </button>
 
               {isSubmitted && (
                     <motion.p
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-center font-mono text-sm text-green-600 dark:text-green-400"
+                      className="text-center text-portfolio-body text-green-600 dark:text-green-400"
                     >
                   Message sent successfully!
                     </motion.p>
@@ -723,10 +768,10 @@ export default function Home() {
                 </form>
 
                 <div className="mt-12 pt-8 border-t border-[color:var(--border-subtle)]">
-                  <p className="font-mono text-xs text-[color:var(--muted)] mb-4">Or reach out directly</p>
+                  <p className="text-portfolio-label mb-4">Or reach out directly</p>
                   <a
                     href="mailto:adhanaesaw@gmail.com"
-                    className="text-[color:var(--foreground)] hover:text-[color:var(--accent)] transition-colors"
+                    className="text-portfolio-body-strong hover:text-[color:var(--accent)] transition-colors"
                   >
                     adhanaesaw@gmail.com
                   </a>

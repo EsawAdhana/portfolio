@@ -37,14 +37,10 @@ html {
   overflow-x: hidden;
 }
 
-@media (min-width: 768px) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
-}
-
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
+  /* 1rem = 16px when html is browser default; Tailwind rem utilities align to the same root */
+  font-size: 1rem;
   color: var(--foreground);
   background: var(--background);
   line-height: 1.6;
@@ -92,7 +88,24 @@ body {
   
   /* Mono label style */
   .label-mono {
-    @apply font-mono text-xs uppercase tracking-[0.15em] text-[color:var(--muted)];
+    @apply font-mono text-base uppercase tracking-[0.15em] text-[color:var(--muted)];
+  }
+
+  /* Portfolio type scale (use sitewide for consistency) */
+  .text-portfolio-label {
+    @apply font-mono text-base text-[color:var(--muted)];
+  }
+
+  .text-portfolio-body {
+    @apply text-base md:text-lg leading-relaxed text-[color:var(--muted)];
+  }
+
+  .text-portfolio-body-strong {
+    @apply text-base md:text-lg leading-relaxed text-[color:var(--foreground)] font-medium;
+  }
+
+  .text-portfolio-title {
+    @apply heading-display text-2xl md:text-3xl;
   }
   
   /* Sharp bordered box */
@@ -126,21 +139,40 @@ body {
   
   /* Primary button */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-3 bg-[color:var(--foreground)] text-[color:var(--background)] font-medium transition-all hover:gap-4;
+    @apply inline-flex items-center gap-2 px-5 py-3.5 text-base bg-[color:var(--foreground)] text-[color:var(--background)] font-medium transition-all hover:gap-4;
   }
   
   .btn-primary:hover {
     background: var(--accent);
   }
+
+  /* Contact CTA — outline, matches bordered cards */
+  .btn-contact {
+    @apply inline-flex items-center gap-2.5 px-5 py-3 font-mono text-base border border-[color:var(--border)] bg-[color:var(--surface)] text-[color:var(--foreground)] transition-colors;
+  }
+
+  .btn-contact:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-contact:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-contact:disabled:hover {
+    border-color: var(--border);
+    color: var(--foreground);
+  }
   
   /* Secondary button */
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-5 py-3 border border-[color:var(--border)] text-[color:var(--foreground)] font-medium transition-all hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)];
+    @apply inline-flex items-center gap-2 px-5 py-3.5 text-base border border-[color:var(--border)] text-[color:var(--foreground)] font-medium transition-all hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)];
   }
   
   /* Form inputs */
   .form-input {
-    @apply w-full px-4 py-3 bg-[color:var(--surface)] border border-[color:var(--border-subtle)] text-[color:var(--foreground)] placeholder:text-[color:var(--muted)] focus:outline-none focus:border-[color:var(--border)] transition-colors;
+    @apply w-full px-4 py-3.5 text-base bg-[color:var(--surface)] border border-[color:var(--border-subtle)] text-[color:var(--foreground)] placeholder:text-[color:var(--muted)] focus:outline-none focus:border-[color:var(--border)] transition-colors;
   }
   
   /* Divider */
@@ -150,7 +182,12 @@ body {
   
   /* Tag/pill without rounded corners */
   .tag {
-    @apply inline-flex items-center px-2 py-1 border border-[color:var(--border-subtle)] text-[color:var(--muted)] font-mono text-xs;
+    @apply inline-flex items-center px-2.5 py-1.5 border border-[color:var(--border-subtle)] text-[color:var(--muted)] font-mono text-base;
+  }
+
+  /* Smaller pills for About / Skills only */
+  .tag-skill {
+    @apply inline-flex items-center px-2 py-1 border border-[color:var(--border-subtle)] text-[color:var(--muted)] font-mono text-sm;
   }
   
   /* Hover card effect */
@@ -226,11 +263,6 @@ body {
 .animate-fade-up,
 .animate-slide-in {
   opacity: 0;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
 }
 
 /* Enhanced hover effects */

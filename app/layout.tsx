@@ -24,7 +24,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Esaw Adhana",
-  description: "Portfolio website of Esaw Adhana",
+  description:
+    "Stanford CS. Former SWE intern at Google and Uber. Full-stack projects including Stanford Root—course discovery, data pipelines, and product UX.",
 };
 
 export default function RootLayout({

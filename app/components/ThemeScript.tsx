@@ -1,20 +1,20 @@
-'use client';
-
-import { useEffect } from 'react';
-
-// This component sets the theme class immediately when the page loads
-// to prevent flash of incorrect theme
+/**
+ * Inline script runs before paint to avoid a flash of wrong theme.
+ * Must stay in sync with ThemeContext (localStorage key "theme", default dark).
+ */
 export default function ThemeScript() {
-  useEffect(() => {
-    // On component mount, apply the theme from localStorage
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
+  const bootstrap = `
+(function() {
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'light') {
       document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
     }
-  }, []);
+  } catch (e) {}
+})();
+`;
 
-  return null;
+  return <script dangerouslySetInnerHTML={{ __html: bootstrap }} />;
 }
