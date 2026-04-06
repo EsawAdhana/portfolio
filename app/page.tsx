@@ -702,10 +702,10 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-[color:var(--background)] border-l border-[color:var(--border)] z-50 overflow-auto"
+              className="fixed top-0 right-0 h-dvh max-h-dvh w-full max-w-md flex flex-col overflow-hidden bg-[color:var(--background)] border-l border-[color:var(--border)] z-50"
             >
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-12">
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 py-4 sm:px-6 sm:py-5">
+                <div className="flex shrink-0 items-center justify-between mb-5 sm:mb-6">
                   <p className="text-portfolio-label">Contact</p>
                   <button
                     onClick={() => setIsContactOpen(false)}
@@ -715,57 +715,59 @@ export default function Home() {
                   </button>
                 </div>
 
-                <h2 className="text-portfolio-title mb-2">
+                <h2 className="text-portfolio-title mb-1.5 shrink-0">
                   Send a Message
                 </h2>
-                <p className="text-portfolio-body mb-8">
+                <p className="text-portfolio-body mb-4 shrink-0 text-base leading-snug sm:mb-5 sm:leading-relaxed">
                   I&apos;ll get back to you as soon as I can.
                 </p>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div>
-                    <label className="text-portfolio-label mb-2 block">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4"
+                >
+                  <div className="shrink-0">
+                    <label className="text-portfolio-label mb-1 block text-sm sm:mb-2 sm:text-base">
                   Name
                 </label>
                 <input
                   {...register("name", { required: true })}
                   type="text"
-                  className="form-input"
+                  className="form-input py-2.5 sm:py-3.5"
                   placeholder="Your name"
                 />
                     {errors.name && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Required</span>}
               </div>
               
-              <div>
-                    <label className="text-portfolio-label mb-2 block">
+                  <div className="shrink-0">
+                    <label className="text-portfolio-label mb-1 block text-sm sm:mb-2 sm:text-base">
                   Email
                 </label>
                 <input
                   {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                   type="email"
-                  className="form-input"
+                  className="form-input py-2.5 sm:py-3.5"
                       placeholder="you@example.com"
                 />
                     {errors.email && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Valid email required</span>}
               </div>
 
-              <div>
-                    <label className="text-portfolio-label mb-2 block">
+                  <div className="flex min-h-0 flex-1 flex-col gap-1 sm:gap-2">
+                    <label className="text-portfolio-label shrink-0 text-sm sm:text-base">
                   Message
                 </label>
                 <textarea
                   {...register("message", { required: true })}
-                      rows={5}
-                  className="form-input resize-none"
+                  className="form-input min-h-[4.5rem] flex-1 resize-none py-2.5 sm:min-h-[5.5rem] sm:py-3.5"
                   placeholder="Your message..."
                 />
-                    {errors.message && <span className="text-portfolio-body text-[color:var(--accent)] mt-1 block">Required</span>}
+                    {errors.message && <span className="text-portfolio-body shrink-0 text-[color:var(--accent)] mt-1 block">Required</span>}
               </div>
 
-              <button 
+                  <button 
                 type="submit" 
                 disabled={isLoading} 
-                className="btn-contact w-full justify-center"
+                    className="btn-contact mt-1 w-full shrink-0 justify-center py-2.5 sm:py-3"
               >
                 {isLoading ? 'Sending...' : 'Send message'}
                 {!isLoading && <ArrowRight className="w-4 h-4 shrink-0" aria-hidden />}
@@ -775,18 +777,18 @@ export default function Home() {
                     <motion.p
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-center text-portfolio-body text-green-600 dark:text-green-400"
+                      className="shrink-0 text-center text-portfolio-body text-green-600 dark:text-green-400"
                     >
                   Message sent successfully!
                     </motion.p>
                   )}
                 </form>
 
-                <div className="mt-12 pt-8 border-t border-[color:var(--border-subtle)]">
-                  <p className="text-portfolio-label mb-4">Or reach out directly</p>
+                <div className="mt-4 shrink-0 border-t border-[color:var(--border-subtle)] pt-4 sm:mt-5 sm:pt-5">
+                  <p className="text-portfolio-label mb-2 text-sm sm:mb-3 sm:text-base">Or reach out directly</p>
                   <a
                     href="mailto:adhanaesaw@gmail.com"
-                    className="text-portfolio-body-strong hover:text-[color:var(--accent)] transition-colors"
+                    className="text-portfolio-body-strong text-base hover:text-[color:var(--accent)] transition-colors sm:text-lg"
                   >
                     adhanaesaw@gmail.com
                   </a>
