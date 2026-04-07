@@ -23,9 +23,20 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://esawadhana.com"),
   title: "Esaw Adhana",
   description:
     "Stanford CS. Former SWE intern at Google and Uber. Full-stack projects including Stanford Root—course discovery, data pipelines, and product UX.",
+  icons: {
+    icon: [
+      { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "64x64" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
