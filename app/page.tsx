@@ -26,6 +26,7 @@ const projects: ProjectType[] = [
       "Built course discovery/planning mobile + web app for fellow Stanford students, integrating multi-filter search, GER class tracking, and cross-device schedule synchronization",
       "Developed custom data pipeline using Puppeteer and Cheerio to ingest and structure years of unstructured course evaluation data into a high-performance Supabase schema",
       "Optimized system latency through multi-layer caching and two-phase data loading, achieving sub-200ms repeat load times for a catalog of 10,000+ courses",
+      "Adopted by 40+ Stanford students within two weeks of launch through organic word-of-mouth",
     ],
     link: "https://stanfordroot.com",
     linkNote: "Note an @stanford.edu email address is required",
@@ -57,7 +58,7 @@ const projects: ProjectType[] = [
     technologies: ["React", "Python", "JavaScript", "Claude API"],
     timeline: "Apr. 2024 – Jun. 2024",
     points: [
-      "Developed Chrome extension integrating Claude that detects and explains propaganda and manipulative language in online news articles within 3 seconds",
+      "Developed Chrome extension integrating Claude that detects and explains propaganda and manipulative language in online news articles in real time",
       "Designed user feedback integration via thumbs up/down signaling to fine-tune model responses and improve detection accuracy over time",
     ],
     link: "https://drive.google.com/file/d/1dMb5b81XKFC9oI6_AM7halHBLDNUwOXV/view?usp=sharing",
@@ -74,11 +75,11 @@ const socialLinks = [
 ];
 
 const languages = ["Java", "Python", "Go", "C", "C++", "HTML", "CSS", "JavaScript", "TypeScript"];
-const software = ["GitHub", "Git", "Next.js", "MongoDB", "Firebase", "Supabase", "React Native", "Excel"];
-const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Espresso"];
+const software = ["GitHub", "Git", "Next.js", "MongoDB", "Firebase", "Supabase", "React Native"];
+const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Chess", "Espresso"];
 
 const typingTexts = [
-  "drinking an iced mocha",
+  "drinking an iced vanilla latte",
   "projecting a V5 boulder",
   "hitting push day at the gym",
   "hosting a game of poker"
