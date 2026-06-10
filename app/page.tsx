@@ -29,7 +29,6 @@ const projects: ProjectType[] = [
       "Adopted by 40+ Stanford students within two weeks of launch through organic word-of-mouth",
     ],
     link: "https://stanfordroot.com",
-    linkNote: "Note an @stanford.edu email address is required",
     gallery: [
       "/projects/stanford-root/01.png",
       "/projects/stanford-root/02.png",
