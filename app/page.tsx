@@ -279,7 +279,7 @@ export default function Home() {
                   className="mb-5 max-w-2xl space-y-1.5"
                 >
                   <p className="font-mono text-base md:text-lg text-[color:var(--foreground)] leading-snug tracking-tight">
-                    Stanford &apos;27 / Computer Science
+                    Stanford &apos;27 / B.S. &amp; M.S. Computer Science
                   </p>
                   <p className="font-mono text-sm md:text-base text-[color:var(--muted)] leading-snug">
                     · Ex-Google · Ex-Uber
