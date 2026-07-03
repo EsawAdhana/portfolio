@@ -29,13 +29,6 @@ const projects: ProjectType[] = [
       "Adopted by 40+ Stanford students within two weeks of launch through organic word-of-mouth",
     ],
     link: "https://stanfordroot.com",
-    gallery: [
-      "/projects/stanford-root/01.png",
-      "/projects/stanford-root/02.png",
-      "/projects/stanford-root/03.png",
-      "/projects/stanford-root/04.png",
-      "/projects/stanford-root/05.png",
-    ],
   },
   {
     title: "Let 'em Cook",
@@ -75,7 +68,7 @@ const socialLinks = [
 
 const languages = ["Java", "Python", "Go", "C", "C++", "HTML", "CSS", "JavaScript", "TypeScript"];
 const software = ["GitHub", "Git", "Next.js", "MongoDB", "Firebase", "Supabase", "React Native"];
-const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Surfing", "Chess", "Espresso"];
+const interests = ["Spanish (B2)", "Investing", "Poker", "Weightlifting", "Bouldering", "Chess", "Coffee"];
 
 const typingTexts = [
   "drinking an iced vanilla latte",
