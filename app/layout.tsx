@@ -3,6 +3,7 @@ import { Instrument_Serif, JetBrains_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeScript from "./components/ThemeScript";
+import { HumanBehaviorInit } from "./HumanBehaviorInit";
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-serif",
@@ -47,6 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${instrumentSerif.variable} ${jetbrainsMono.variable} ${dmSans.variable} antialiased`}>
+        <HumanBehaviorInit />
         <ThemeScript />
         <ThemeProvider>
           {children}
