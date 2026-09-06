@@ -202,10 +202,85 @@ body {
   
   /* Grid pattern background */
   .bg-grid {
-    background-image: 
+    background-image:
       linear-gradient(var(--border-subtle) 1px, transparent 1px),
       linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
     background-size: 24px 24px;
+  }
+}
+
+/*
+ * Keyboard focus. The browser default outline is close to invisible on the dark
+ * background, so every interactive element gets an explicit accent ring.
+ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Underlined text link — the default link treatment */
+.text-link {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  /* --border-subtle is close to invisible in dark mode; a link needs to read as one */
+  text-decoration-color: var(--muted);
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.text-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Same link, quieter — for secondary lists */
+.text-link-muted {
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.text-link-muted:hover {
+  color: var(--foreground);
+  text-decoration-color: var(--border-subtle);
+}
+
+/* Horizontal scrollers (the mobile nav row) without a visible scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Caret for the "Currently ..." line */
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: caretBlink 1.05s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret-blink {
+    animation: none;
   }
 }
 
