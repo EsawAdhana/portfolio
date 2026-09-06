@@ -26,7 +26,22 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://esawadhana.com"),
   title: "Esaw Adhana",
   description:
-    "Stanford CS (B.S. + M.S. '27). Former SWE intern at Google and Uber. Full-stack projects including Stanford Root—course discovery, data pipelines, and product UX.",
+    "Stanford CS (B.S. + M.S. '27) and founding engineer at Human Behavior. Previously SWE at Google and Uber. Builder of Stanford Root, a course-planning app used by 7k+ Stanford students.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Esaw Adhana",
+    title: "Esaw Adhana",
+    description:
+      "Stanford CS (B.S. + M.S. '27) and founding engineer at Human Behavior. Previously SWE at Google and Uber. Builder of Stanford Root, a course-planning app used by 7k+ Stanford students.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Esaw Adhana",
+    description:
+      "Stanford CS (B.S. + M.S. '27) and founding engineer at Human Behavior. Previously SWE at Google and Uber. Builder of Stanford Root, a course-planning app used by 7k+ Stanford students.",
+  },
   icons: {
     icon: [
       { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
