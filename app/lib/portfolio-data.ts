@@ -23,7 +23,7 @@ export const identity = {
 
 /** His words, verbatim. */
 export const intro =
-  "I'm studying CS at Stanford. This past summer, I worked as a founding engineer at Human Behavior, an AI product analytics startup. In previous summers, I worked as a SWE at Google and Uber. On the side, I love building consumer-facing apps: lately, I built Stanford Root, a course-planning app used by 7k+ Stanford students.";
+  "This past summer, I worked as a founding engineer at Human Behavior, an AI product analytics startup. Previously interned at Google and Uber as a SWE. On the side I like building consumer apps: most recently Stanford Root, used by 7k+ Stanford students.";
 
 /** Verbatim from the live site's contact section. */
 export const contactCopy =
