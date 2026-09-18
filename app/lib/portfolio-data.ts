@@ -23,7 +23,7 @@ export const identity = {
 
 /** His words, verbatim. */
 export const intro =
-  "This past summer, I worked as a founding engineer at Human Behavior, an AI product analytics startup. Previously interned at Google and Uber as a SWE. On the side I like building consumer apps: most recently Stanford Root, used by 8k+ Stanford students.";
+  "This past summer, I worked as a founding engineer at Human Behavior, an AI product analytics startup. Previously interned at Google and Uber as a SWE. On the side I like building consumer apps: most recently Stanford Root, used by 10k+ Stanford students.";
 
 /** Verbatim from the live site's contact section. */
 export const contactCopy =
@@ -81,7 +81,7 @@ export const projects: ProjectType[] = [
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
     timeline: 'Jan. 2026 – Present',
     points: [
-      'Built a Stanford course discovery platform now used by 8,000+ students, grown by organic word of mouth',
+      'Built a Stanford course discovery platform now used by 10,000+ students, grown by organic word of mouth',
       'Added multi-filter search, waitlist and enrollment tracking, and schedule sync across devices',
     ],
     link: 'https://stanfordroot.com',
