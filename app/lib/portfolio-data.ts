@@ -21,9 +21,14 @@ export const identity = {
   credential: "Stanford '27 / B.S. & M.S. Computer Science",
 } as const;
 
-/** His words, verbatim. */
-export const intro =
-  "This past summer, I worked as a founding engineer at Human Behavior, an AI product analytics startup. Previously interned at Google and Uber as a SWE. On the side I like building consumer apps: most recently Stanford Root, used by 10k+ Stanford students.";
+/** A greeting, then his words, verbatim. Split only so the company can carry a link. */
+export const intro = {
+  lead: 'Welcome to my personal portfolio website!',
+  beforeLink: 'This past summer, I worked as a founding engineer at ',
+  link: { label: 'Human Behavior', url: 'https://www.humanbehavior.co' },
+  afterLink:
+    ", an AI product analytics startup. Previously interned at Google and Uber as a SWE. On the side I like building consumer apps: most recently Stanford Root, used by 10k+ Stanford students.",
+} as const;
 
 /** Verbatim from the live site's contact section. */
 export const contactCopy =

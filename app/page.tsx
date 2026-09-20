@@ -70,7 +70,13 @@ export default function Home() {
           <p className="mt-3 text-[14px] leading-relaxed text-[color:var(--muted)]">
             {identity.credential}
           </p>
-          <p className="mt-6 text-pretty text-[17px] leading-[1.7]">{intro}</p>
+          <p className="mt-6 text-pretty text-[17px] leading-[1.7]">
+            {intro.lead} {intro.beforeLink}
+            <a href={intro.link.url} {...linkTarget(intro.link.url)} className="text-link">
+              {intro.link.label}
+            </a>
+            {intro.afterLink}
+          </p>
         </header>
 
         {/* ── Rail ─────────────────────────────────────────────────────────── */}
